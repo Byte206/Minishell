@@ -23,7 +23,7 @@ int main(int argc, char **argv, char **envp)
     (void)argv;
     // g_exit_code = 0; Gab used on signals
     // env = init_env(envp); Gab
-    // setup_signals(); Gab signals
+    set_signals();
     while (1)
     {
         input = readline("minishell> ");
