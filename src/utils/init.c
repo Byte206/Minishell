@@ -1,26 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bmonterd <bmonterd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/02 16:10:00 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/11/02 16:13:16 by bmonterd         ###   ########.fr       */
+/*   Created: 2025/11/02 16:09:19 by bmonterd          #+#    #+#             */
+/*   Updated: 2025/11/02 16:32:09 by bmonterd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../includes/minishell.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "../libft/libft.h"
+static t_token *init_token(void)
+{
 
-# include "structs.h"
-# include "utils.h" 
+}
+t_redir *init_redir(void)
+{
 
-#endif
+}
+t_cmd   *init_cmd(void)
+{
+
+}
+t_ast   *init_ast(void)
+{
+
+}
