@@ -12,6 +12,9 @@
 
 #include "../includes/minishell.h"
 
+static 
+
+
 int main(int argc, char **argv, char **envp)
 {
     // t_env   *env; Gab
