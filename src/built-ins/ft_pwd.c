@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmonterd <bmonterd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gamorcil <gamorcil@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/01 14:30:23 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/11/01 15:38:22 by bmonterd         ###   ########.fr       */
+/*   Created: 2025/11/02 10:54:16 by gamorcil          #+#    #+#             */
+/*   Updated: 2025/11/02 11:00:46 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../includes/minishell.h"
 
-#include "../includes/minishell.h"
-
-
-int	main(void)
+void	ft_pwd(void)
 {
-	char	*input;
-	t_token	*tokens;
-	t_ast	*ast;
+	char	*path;
 
-	while (1)
-	{
-		input = readline("minishell> ");
-		if (!input)
-			break;
-		if (*input)
-			add_history(input);
-	}
-	printf("exit\n");
-	return (0);
+	path = getcwd(NULL, 0);
+	printf("%s\n", path);
+	free(path);
 }
+/*
+int main()
+{
+	ft_pwd();
+} */

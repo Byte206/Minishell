@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   structs.h                                          :+:      :+:    :+:   */
+/*   minishell_structs.h                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bmonterd <bmonterd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 14:19:56 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/11/02 14:43:33 by bmonterd         ###   ########.fr       */
+/*   Updated: 2025/11/01 14:21:15 by bmonterd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 # define MINISHELL_STRUCTS_H
 
 # include <stdlib.h>
+
+/* ───────────────────────────────────────────── */
+/*               ENUMS Y STRUCTS                 */
+/* ───────────────────────────────────────────── */
 
 typedef enum e_token_type
 {
@@ -26,20 +30,12 @@ typedef enum e_token_type
 	TOKEN_EOF
 }					t_token_type;
 
-typedef enum e_quote_type
-{
-    QUOTE_NONE,
-    QUOTE_SINGLE,
-    QUOTE_DOUBLE
-}   t_quote_type;
-
 typedef struct s_token
 {
-    char            *value;
-    t_token_type    type;
-    t_quote_type    quote_type;
-    struct s_token  *next;
-}   t_token;
+	char			*value;
+	t_token_type	type;
+	struct s_token	*next;
+}					t_token;
 
 typedef struct s_parser_state
 {
