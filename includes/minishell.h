@@ -8,6 +8,7 @@
 #include <readline/history.h>
 
 # include "structs.h"
+# include "built_ins.h"
 
 
 #endif
