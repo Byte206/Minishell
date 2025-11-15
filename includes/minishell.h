@@ -21,6 +21,8 @@
 # include "../libft/libft.h"
 
 # include "structs.h"
-# include "utils.h" 
+# include "utils.h"
+# include "lexer.h"
+# include "parser.h"
 
 #endif

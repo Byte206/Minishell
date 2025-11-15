@@ -1,0 +1,14 @@
+# Executables
+minishell
+minishell_debug
+
+# Debug symbols
+*.dSYM/
+
+# Object files
+*.o
+*.a
+
+# libft objects
+libft/*.o
+libft/libft.a
