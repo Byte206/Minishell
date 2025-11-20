@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmonterd <bmonterd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bmonterd <bmonterd@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 14:19:56 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/11/02 14:43:33 by bmonterd         ###   ########.fr       */
+/*   Updated: 2025/11/15 20:12:23 by bmonterd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ typedef enum e_token_type
 	TOKEN_REDIR_IN,
 	TOKEN_REDIR_OUT,
 	TOKEN_APPEND,
-	TOKEN_HEREDOC,
-	TOKEN_EOF
+	TOKEN_HEREDOC
 }					t_token_type;
 
 typedef enum e_quote_type
@@ -38,6 +37,7 @@ typedef struct s_token
     char            *value;
     t_token_type    type;
     t_quote_type    quote_type;
+    int             joined;
     struct s_token  *next;
 }   t_token;
 

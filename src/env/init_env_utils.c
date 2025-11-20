@@ -1,32 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   init_env_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/02 16:10:00 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/11/20 14:39:08 by gamorcil         ###   ########.fr       */
+/*   Created: 2025/11/03 13:41:09 by gamorcil          #+#    #+#             */
+/*   Updated: 2025/11/20 14:26:19 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../../includes/minishell.h"
+char    *get_name(char *var)
+{
+	char    *sign;
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "../libft/libft.h"
+	if (!var)
+		return (NULL);
+	sign = ft_strchr(var, '=');
+	if (!sign)
+		return (NULL);
+	return (ft_substr(var, 0, sign - var));
+}
 
-# include "structs.h"
-# include "utils.h"
-# include "lexer.h"
-# include "parser.h"
-//gabi
-# include "built_ins.h"
-# include <signal.h>
-# include "execution.h"
+char    *get_value(char *var)
+{
+	char    *sign;
 
-#endif
+	if (!var)
+		return (NULL);
+	sign = ft_strchr(var, '=');
+	if (!sign)
+		return (NULL);
+	return (ft_strdup(sign + 1));
+}
