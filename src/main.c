@@ -6,7 +6,7 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 14:30:23 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/11/20 15:00:41 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/11/23 20:05:40 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	main(int argc, char **argv, char **envp)
 	set_signals();
 
 	/* Debug: print environment list created from envp */
-	print_env_list(env);
+	//print_env_list(env);
 	while (1)
 	{
 		input = readline("minishell> ");
@@ -60,12 +60,12 @@ int	main(int argc, char **argv, char **envp)
 			tokens = lexer(input);
 			if (tokens)
 			{
-				print_tokens(tokens);
+				//print_tokens(tokens);
 				// expander(tokens, envp);
 				ast = parser(tokens);
 				if (ast)
 				{
-					print_ast(ast);
+					//print_ast(ast);
 					g_exit_status = execution(ast, &env);
 					free_ast(ast);
 				}

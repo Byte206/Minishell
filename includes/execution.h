@@ -3,11 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gamorcil <gamorcil@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:38:53 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/20 14:38:55 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/11/23 20:02:08 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
+//execution
+int	execution(t_ast *ast, t_env **env);
