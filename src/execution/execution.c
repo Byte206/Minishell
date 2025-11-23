@@ -6,7 +6,7 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:34:58 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/23 20:04:54 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/11/23 20:14:57 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int is_builtin(char *cmd_name)
     return (0);
 }
 /*
-static int execute_builtin(t_ast *ast, t_env **env)
+static int exec_builtin(t_ast *ast, t_env **env)
 {
 	if (ft_strcmp(ast->commands->cmd_name, "cd") == 0)
 		return (ft_cd(ast->commands, env));
@@ -59,6 +59,31 @@ static int count_cmd(t_cmd *cmd)
 	return (i);
 }
 
+static int exec_single_cmd(t_ast *ast, t_env **env)
+{
+	pid_t	pid;
+	char	*path;
+	
+	if (is_builtin(ast->commands->cmd_name))
+		return (exec_builtin(ast, env));
+	pid = fork();
+	if (pid == 0)
+	{
+		set_signals_child();
+		set_redirections(ast->commands->redirections);
+		
+		path = set_path(ast->commands->cmd_name, *env);
+		if (!path)
+		{
+			//comand not found return;
+		}
+		execve(path, ast->commands->argv, env_to_char_array(*env));
+		perror("execve");
+		exit(127);
+	}
+	
+}
+
 int	execution(t_ast *ast, t_env **env)
 {
 	int cmd_count;
@@ -66,6 +91,11 @@ int	execution(t_ast *ast, t_env **env)
 	if (!ast)
 		return (1);
 	cmd_count = count_cmd(ast->commands);
-	printf("Command count:%d\n", cmd_count);
+	//printf("Command count:%d\n", cmd_count);
+	if (cmd_count == 0)
+		return (0);
+	if (cmd_count == 1)
+		return (exec_single_cmd(ast, env));
+	return (exec_with_pipe(ast, env));
 	return (0);
 }
