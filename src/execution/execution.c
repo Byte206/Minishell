@@ -27,45 +27,33 @@ static int is_builtin(char *cmd_name)
         return (1);
     return (0);
 }
-/*
 static int exec_builtin(t_ast *ast, t_env **env)
 {
-	if (ft_strcmp(ast->commands->cmd_name, "cd") == 0)
-		return (ft_cd(ast->commands, env));
-	else if (ft_strcmp(ast->commands->cmd_name, "echo") == 0)
-		return (ft_echo(ast->commands));
-	else if (ft_strcmp(ast->commands->cmd_name, "env") == 0)
-		return (ft_env(ast->commands, env));
-	else if (ft_strcmp(ast->commands->cmd_name, "exit") == 0)
-		return (ft_exit(ast->commands));
-	else if (ft_strcmp(ast->commands->cmd_name, "export") == 0)
-		return (ft_export(ast->commands, env));
-	else if (ft_strcmp(ast->commands->cmd_name, "pwd") == 0)
-		return (ft_pwd(ast->commands));
-	else if (ft_strcmp(ast->commands->cmd_name, "unset") == 0)
-		return (ft_unset(ast->commands, env)); 
-} */
-
-static int count_cmd(t_cmd *cmd)
-{
-	int i;
-
-	i = 0;
-	while (cmd)
-	{
-		i++;
-		cmd = cmd->next;
-	}
-	return (i);
+    if (ft_strncmp(ast->commands->cmd_name, "cd", 3) == 0)
+        return (ft_cd(ast->commands, env));
+    else if (ft_strncmp(ast->commands->cmd_name, "echo", 5) == 0)
+        return (ft_echo(ast->commands));
+    else if (ft_strncmp(ast->commands->cmd_name, "env", 4) == 0)
+        return (ft_env(ast->commands, env));
+    else if (ft_strncmp(ast->commands->cmd_name, "exit", 5) == 0)
+        return (ft_exit(ast->commands));
+    else if (ft_strncmp(ast->commands->cmd_name, "export", 7) == 0)
+        return (ft_export(ast->commands, env));
+    else if (ft_strncmp(ast->commands->cmd_name, "pwd", 4) == 0)
+        return (ft_pwd(ast->commands));
+    else if (ft_strncmp(ast->commands->cmd_name, "unset", 6) == 0)
+        return (ft_unset(ast->commands, env));
+    return (0);
 }
 
 static int exec_single_cmd(t_ast *ast, t_env **env)
 {
-	pid_t	pid;
+	int		pid;
 	char	*path;
 	
 	if (is_builtin(ast->commands->cmd_name))
 		return (exec_builtin(ast, env));
+	/*
 	pid = fork();
 	if (pid == 0)
 	{
@@ -81,21 +69,16 @@ static int exec_single_cmd(t_ast *ast, t_env **env)
 		perror("execve");
 		exit(127);
 	}
-	
+	*/
 }
 
 int	execution(t_ast *ast, t_env **env)
-{
-	int cmd_count;
-	
+{	
 	if (!ast)
 		return (1);
-	cmd_count = count_cmd(ast->commands);
 	//printf("Command count:%d\n", cmd_count);
-	if (cmd_count == 0)
-		return (0);
-	if (cmd_count == 1)
+	if (!ast->commands->next)
 		return (exec_single_cmd(ast, env));
-	return (exec_with_pipe(ast, env));
+	//return (exec_with_pipe(ast, env));
 	return (0);
 }

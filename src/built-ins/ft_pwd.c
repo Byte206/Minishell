@@ -12,13 +12,21 @@
 
 #include "../../includes/minishell.h"
 
-void	ft_pwd(void)
+int 	ft_pwd(t_cmd *cmd)
 {
 	char	*path;
 
+	if (cmd->argv
+		&& cmd->argv[1] != NULL)
+	{
+		ft_putstr_fd("pwd: too many arguments\n", 2);
+		//g_exit_status = 1;
+		return (1);
+	}
 	path = getcwd(NULL, 0);
 	printf("%s\n", path);
 	free(path);
+	return (0);
 }
 /*
 int main()

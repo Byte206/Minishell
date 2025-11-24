@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-void	ft_echo(char **argv)
+int	ft_echo(char **argv)
 {
 	int	new_line;
 	int	i;
@@ -33,6 +33,7 @@ void	ft_echo(char **argv)
 	}
 	if (new_line == 1)
 		printf("\n");
+	return (0);
 }
 /*
 int main()
