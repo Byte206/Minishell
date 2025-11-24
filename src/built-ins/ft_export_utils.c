@@ -12,50 +12,40 @@
 
 #include "../../includes/minishell.h"
 
-static t_env    *find_next_min(t_env *env, t_env *start)
+static int count_env_nodes(t_env *env)
 {
-    t_env   *current = env;
-    t_env   *min = NULL;
+    t_env   *current;
+    int     count;
 
+    count = 0;
+    current = env;
     while (current)
     {
-        if ((!start || ft_strcmp(current->name, start->name) > 0)
-            && (!min || ft_strcmp(current->name, min->name) < 0))
-        {
-            min = current;
-        }
+        count++;
         current = current->next;
     }
-    return (min);
-}
-
-
-static void print_env_var(t_env *env_var, int *first)
-{
-    if (!*first)
-        printf("\n");
-    printf("declare -x %s=\"%s\"", env_var->name, env_var->value);
-    *first = 0;
+    return (count);
 }
 
 int print_sorted_env(t_env **env)
 {
-    t_env   *min;
-    t_env   *start;
-    int     first;
+    char    **env_array;
+    int     i;
+    int     count;
 
-    if (!env || !*env)
-        return (0);
-    start = NULL;
-    first = 1;
-    while (1)
+    count = count_env_nodes(*env);
+    env_array = malloc(sizeof(char *) * (count + 1));
+    if (!env_array)
+        return (1);
+    while(i < count)
     {
-        min = find_next_min(*env, start);
-        if (!min)
-            break ;
-        print_env_var(min, &first);
-        start = min;
+        env_array[i] = malloc(sizeof(char) * (get_node_len(env))); // assuming max length
+        if (!env_array[i])
+            return (1);
+        copy_node_to_array(env, env_array[i], i);
+        env = env->next;
+        i++;
     }
-    printf("\n");
-    return (0);
+    env_array[i] = NULL;
+    sort_env_array(env_array, count);
 }

@@ -71,7 +71,7 @@ int	ft_export(t_cmd *cmd, t_env **env)
 	char	*value;
 
 	if (!cmd->argv[1])
-		return (print_sorted_env(*env));
+		return (print_env_sorted(env));
 	i = 1;
 	while (cmd->argv[i])
 	{
