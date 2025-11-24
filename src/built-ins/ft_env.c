@@ -16,7 +16,11 @@ int	ft_env(t_cmd *cmd, t_env **env)
 {
 	t_env	*cur;
 
-	(void)cmd;
+	if (cmd->argv[1])
+	{
+		ft_putstr_fd("env: too many arguments\n", 2);
+		return (1);
+	}
 	if (!env || !*env)
 		return (0);
 	cur = *env;

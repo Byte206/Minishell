@@ -12,12 +12,13 @@
 
 #include "../includes/minishell.h"
 
-int g_exit_status = 0;
+int			g_signal = 0;
 
 static void	print_env_list(t_env *env)
 {
-	t_env *cur = env;
+	t_env	*cur;
 
+	cur = env;
 	printf("--- ENV LIST DUMP ---\n");
 	while (cur)
 	{
@@ -34,7 +35,6 @@ static void	print_env_list(t_env *env)
 	printf("--- END ENV LIST ---\n");
 }
 
-
 int	main(int argc, char **argv, char **envp)
 {
 	char	*input;
@@ -42,14 +42,9 @@ int	main(int argc, char **argv, char **envp)
 	t_ast	*ast;
 	t_env	*env;
 
-	if (argc != 1)
+	if (argc != 1 || argv[1])
 		return (1);
-	(void)argv;
 	env = init_env(envp);
-	set_signals();
-
-	/* Debug: print environment list created from envp */
-	//print_env_list(env);
 	while (1)
 	{
 		input = readline("minishell> ");
@@ -61,13 +56,10 @@ int	main(int argc, char **argv, char **envp)
 			tokens = lexer(input);
 			if (tokens)
 			{
-				//print_tokens(tokens);
-				// expander(tokens, envp);
 				ast = parser(tokens);
 				if (ast)
 				{
-					//print_ast(ast);
-					g_exit_status = execution(ast, &env);
+					execution(ast, &env);
 					free_ast(ast);
 				}
 				free_tokens(tokens);
@@ -75,6 +67,5 @@ int	main(int argc, char **argv, char **envp)
 		}
 		free(input);
 	}
-	printf("exit\n");
 	return (0);
 }

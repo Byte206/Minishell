@@ -25,10 +25,10 @@
 # include "lexer.h"
 # include "parser.h"
 //gabi
-# include "built_ins.h"
 # include <signal.h>
 # include "execution.h"
+# include <fcntl.h>
 
-extern int g_exit_status;
+extern int g_signal;
 
 #endif

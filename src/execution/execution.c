@@ -51,10 +51,10 @@ static int father(int pid)
 
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
+		return(WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
-		g_exit_status = 128 + WTERMSIG(status);
-	return (g_exit_status);
+		return(128 + WTERMSIG(status));
+	return (1);
 }
 
 static int exec_single_cmd(t_ast *ast, t_env **env)

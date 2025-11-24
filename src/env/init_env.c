@@ -16,14 +16,13 @@ static t_env *create_env_node(char *env_str);
 static void  add_env_node(t_env **head, t_env *node);
 static void  create_default_env(t_env **head);
 
-
-
 t_env	*init_env(char **envp)
 {
 	t_env	*env_list;
 	t_env	*new_node;
 	int		i;
 
+	set_signals();
 	env_list = NULL;
 	i = 0;
 	

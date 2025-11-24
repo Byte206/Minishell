@@ -1,38 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gamorcil <gamorcil@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/02 10:54:16 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/02 11:00:46 by gamorcil         ###   ########.fr       */
+/*   Created: 2025/11/24 15:18:04 by gamorcil          #+#    #+#             */
+/*   Updated: 2025/11/24 15:18:13 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "libft.h"
 
-int	ft_pwd(t_cmd *cmd)
+int ft_strcmp(const char *s1, const char *s2)
 {
-	char	*path;
+    size_t i;
 
-	if (cmd->argv && cmd->argv[1] != NULL)
-	{
-		ft_putstr_fd("pwd: too many arguments\n", 2);
-		return (1);
-	}
-	path = getcwd(NULL, 0);
-	if (!path)
-	{
-		perror("pwd");
-		return (1);
-	}
-	printf("%s\n", path);
-	free(path);
-	return (0);
+    i = 0;
+    while (s1[i] && s2[i])
+    {
+        if (s1[i] != s2[i])
+            return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+        i++;
+    }
+    return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
-/*
-int	main(void)
-{
-	ft_pwd();
-} */
