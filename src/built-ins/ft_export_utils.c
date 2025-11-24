@@ -27,6 +27,31 @@ static int count_env_nodes(t_env *env)
     return (count);
 }
 
+void copy_node_to_array(t_env **env, char *dest, int index)
+{
+    t_env   *current;
+    int     i;
+
+    current = *env;
+    i = 0;
+    while (current && i < index)
+    {
+        current = current->next;
+        i++;
+    }
+    if (current)
+    {
+        ft_strcpy(dest, current->name);
+        ft_strcat(dest, "=");
+        ft_strcat(dest, current->value);
+    }
+}
+
+static void sort_env_array(char **env_array, int count)
+{
+
+}
+
 int print_sorted_env(t_env **env)
 {
     char    **env_array;
@@ -48,4 +73,7 @@ int print_sorted_env(t_env **env)
     }
     env_array[i] = NULL;
     sort_env_array(env_array, count);
+    print_env_array(env_array);
+    free_env_array(env_array);
+    return (0);
 }
