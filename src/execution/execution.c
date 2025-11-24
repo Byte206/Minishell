@@ -32,7 +32,7 @@ static int exec_builtin(t_ast *ast, t_env **env)
     if (ft_strncmp(ast->commands->cmd_name, "cd", 3) == 0)
         return (ft_cd(ast->commands, env));
     else if (ft_strncmp(ast->commands->cmd_name, "echo", 5) == 0)
-        return (ft_echo(ast->commands));
+        return (ft_echo(ast->commands->argv));
     else if (ft_strncmp(ast->commands->cmd_name, "env", 4) == 0)
         return (ft_env(ast->commands, env));
     else if (ft_strncmp(ast->commands->cmd_name, "exit", 5) == 0)
@@ -45,6 +45,17 @@ static int exec_builtin(t_ast *ast, t_env **env)
         return (ft_unset(ast->commands, env));
     return (0);
 }
+static int father(int pid)
+{
+	int		status;
+
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		g_exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		g_exit_status = 128 + WTERMSIG(status);
+	return (g_exit_status);
+}
 
 static int exec_single_cmd(t_ast *ast, t_env **env)
 {
@@ -53,23 +64,24 @@ static int exec_single_cmd(t_ast *ast, t_env **env)
 	
 	if (is_builtin(ast->commands->cmd_name))
 		return (exec_builtin(ast, env));
-	/*
 	pid = fork();
 	if (pid == 0)
 	{
-		set_signals_child();
-		set_redirections(ast->commands->redirections);
+		//set_signals_child();
+		//set_redirections(ast->commands->redirections);
 		
 		path = set_path(ast->commands->cmd_name, *env);
 		if (!path)
 		{
-			//comand not found return;
+			printf("%s: command not found\n", ast->commands->cmd_name);
+			exit(127);
 		}
 		execve(path, ast->commands->argv, env_to_char_array(*env));
 		perror("execve");
 		exit(127);
 	}
-	*/
+	else 
+		return (father(pid));
 }
 
 int	execution(t_ast *ast, t_env **env)

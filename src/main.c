@@ -42,7 +42,8 @@ int	main(int argc, char **argv, char **envp)
 	t_ast	*ast;
 	t_env	*env;
 
-	(void)argc;
+	if (argc != 2)
+		return (1);
 	(void)argv;
 	env = init_env(envp);
 	set_signals();

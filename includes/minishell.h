@@ -29,4 +29,6 @@
 # include <signal.h>
 # include "execution.h"
 
+extern int g_exit_status;
+
 #endif
