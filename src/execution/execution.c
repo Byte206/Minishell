@@ -89,8 +89,13 @@ int	execution(t_ast *ast, t_env **env, int exit_code)
 {
 	if (!ast)
 		return (1);
+	set_signals();
 	if (!ast->commands->next)
+	{
+		set_redirections(ast->commands->redirections);
 		exit_code = (exec_single_cmd(ast, env, exit_code));
-	// return (exec_with_pipe(ast, env));
+	}
+	else
+		exit_code = execute_multiple_commands(ast, env);
 	return (exit_code);
 }
