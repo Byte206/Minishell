@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gamorcil <gamorcil@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 10:37:34 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/02 10:40:49 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/11/25 10:39:37 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void call_export(char *name, char *value, t_env **env)
     free(var);
     free(cmd->argv);
     free(cmd);
-    return (0)
+    return (0);
 }
 
 int		ft_cd(t_cmd *cmd, t_env **env)

@@ -1,79 +1,102 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_builtins_utils.c                                :+:      :+:    :+:   */
+/*   ft_export_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gamorcil <gamorcil@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 15:07:10 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/24 15:07:12 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/11/25 10:43:36 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int count_env_nodes(t_env *env)
-{
-    t_env   *current;
-    int     count;
 
-    count = 0;
-    current = env;
-    while (current)
-    {
-        count++;
-        current = current->next;
-    }
-    return (count);
+static int	env_size(t_env *env)
+{
+	int		i;
+
+	i = 0;
+	while (env)
+	{
+		i++;
+		env = env->next;
+	}
+	return (i);
 }
 
-void copy_node_to_array(t_env **env, char *dest, int index)
+static int	safe_cmp(t_env *a, t_env *b)
 {
-    t_env   *current;
-    int     i;
-
-    current = *env;
-    i = 0;
-    while (current && i < index)
-    {
-        current = current->next;
-        i++;
-    }
-    if (current)
-    {
-        ft_strcpy(dest, current->name);
-        ft_strcat(dest, "=");
-        ft_strcat(dest, current->value);
-    }
+	if (!a->name && !b->name)
+		return (0);
+	if (!a->name)
+		return (1);
+	if (!b->name)
+		return (-1);
+	return (strcmp(a->name, b->name));
 }
 
-static void sort_env_array(char **env_array, int count)
+static void	swap_env(t_env **a, t_env **b)
 {
+	t_env	*tmp;
 
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
 }
 
-int print_sorted_env(t_env **env)
+static void	sort_env(t_env **arr, int size)
 {
-    char    **env_array;
-    int     i;
-    int     count;
+	int		i;
+	int		j;
 
-    count = count_env_nodes(*env);
-    env_array = malloc(sizeof(char *) * (count + 1));
-    if (!env_array)
-        return (1);
-    while(i < count)
-    {
-        env_array[i] = malloc(sizeof(char) * (get_node_len(env))); // assuming max length
-        if (!env_array[i])
-            return (1);
-        copy_node_to_array(env, env_array[i], i);
-        env = env->next;
-        i++;
-    }
-    env_array[i] = NULL;
-    sort_env_array(env_array, count);
-    print_env_array(env_array);
-    free_env_array(env_array);
-    return (0);
+	i = 0;
+	while (i < size - 1)
+	{
+		j = 0;
+		while (j < size - i - 1)
+		{
+			if (safe_cmp(arr[j], arr[j + 1]) > 0)
+				swap_env(&arr[j], &arr[j + 1]);
+			j++;
+		}
+		i++;
+	}
+}
+
+void	print_env_sorted(t_env *env)
+{
+	int		i;
+	int		size;
+	t_env	**arr;
+
+	if (!env)
+		return ;
+	size = env_size(env);
+	if (size <= 0)
+		return ;
+	arr = malloc(sizeof(t_env *) * size);
+	if (!arr)
+		return ;
+	i = 0;
+	while (env)
+	{
+		arr[i++] = env;
+		env = env->next;
+	}
+	sort_env(arr, size);
+	i = 0;
+	while (i < size)
+	{
+		if (arr[i]->name)
+		{
+			if (arr[i]->value)
+				printf("%s=%s\n", arr[i]->name, arr[i]->value);
+			else
+				printf("%s\n", arr[i]->name);
+		}
+		i++;
+	}
+	free(arr);
 }
