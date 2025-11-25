@@ -102,6 +102,8 @@ static char	*get_cmd_path(char *cmd_name, char *path_value)
 
 char	*set_path(char *cmd_name, t_env *env)
 {
+	char	*cmd_path;
+
 	while (env)
 	{
 		if (ft_strncmp(env->name, "PATH", 5) == 0)
@@ -110,5 +112,8 @@ char	*set_path(char *cmd_name, t_env *env)
 	}
 	if (!env)
 		return (NULL);
-	return (get_cmd_path(cmd_name, env->value));
+	cmd_path = get_cmd_path(cmd_name, env->value);
+	if (!cmd_path)
+		cmd_path = look_for_exec_in_cwd(cmd_name);
+	return (cmd_path);
 }

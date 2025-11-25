@@ -70,7 +70,6 @@ static int	exec_single_cmd(t_ast *ast, t_env **env, int exit_code)
 	if (pid == 0)
 	{
 		// set_signals_child();
-		// set_redirections(ast->commands->redirections);
 		path = set_path(ast->commands->cmd_name, *env);
 		if (!path)
 		{
