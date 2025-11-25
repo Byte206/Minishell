@@ -12,24 +12,60 @@
 
 #include "../../includes/minishell.h"
 
-static void	call_export(char *name, char *value, t_env **env)
+static char *get_value_from_env(const char *name, t_env **env)
 {
-	char	*var;
-	t_cmd	*cmd;
+	t_env	*current;
 
-	cmd->argv = malloc(sizeof(char *) * 2);
-	var = ft_strjoin(name, "=");
-	var = ft_strjoin(var, value);
-	cmd->argv[0] = var;
-	cmd->argv[1] = NULL;
-	cmd->cmd_name = "export";
-	cmd->redirections = NULL;
-	cmd->next = NULL;
-	ft_export(cmd, env);
-	free(var);
-	free(cmd->argv);
-	free(cmd);
-	return ;
+	current = *env;
+	while (current)
+	{
+		if (ft_strcmp(current->name, name) == 0)
+			return (current->value);
+		current = current->next;
+	}
+	return (NULL);
+}
+
+static char *get_old_path(t_env **env)
+{
+	char *cwd;
+	char *pwd_value;
+
+	cwd = getcwd(NULL, 0);
+	if (cwd)
+		return (cwd);
+	pwd_value = get_value_from_env("PWD", env);
+	if (pwd_value)
+		return (ft_strdup(pwd_value));
+	return (NULL);
+}
+static char *get_target_path(char *path, char *old_path, t_env **env)
+{
+	char *target_path;
+
+	if (!path)
+	{
+		target_path = get_value_from_env("HOME", env);
+		if (!target_path)
+		{
+			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+			return (NULL);
+		}
+		return (ft_strdup(target_path));
+	}
+	if (ft_strcmp(path, "-") == 0)
+	{
+		target_path = get_value_from_env("OLDPWD", env);
+		if (!target_path)
+		{
+			ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
+			return (NULL);
+		}
+		printf("%s\n", target_path);
+		return (ft_strdup(target_path));
+	}
+	return (ft_strdup(path));
+
 }
 
 int	ft_cd(t_cmd *cmd, t_env **env)
@@ -37,18 +73,26 @@ int	ft_cd(t_cmd *cmd, t_env **env)
 	char	*new_path;
 	char	*old_path;
 
-	old_path = getcwd(NULL, 0);
-	if (chdir(cmd->argv[1]) != 0)
+	if (cmd->argv[2])
 	{
-		perror("cd");
+		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		return (1);
+	}
+	old_path = get_old_path(env);
+	new_path = get_target_path(cmd->argv[1], old_path, env);
+	if (!new_path)
+	{
 		free(old_path);
 		return (1);
 	}
-	new_path = getcwd(NULL, 0);
-	// Update PWD and OLDPWD in the environment list
-	call_export("OLDPWD", old_path, env);
-	call_export("PWD", new_path, env);
-	free(old_path);
-	free(new_path);
-	return (0);
+	if (chdir(new_path) == -1)
+	{
+		perror("minishell: cd");
+		free(new_path);
+		free(old_path);
+		return (1);
+	}
+	//update_env_path(env);
+	//update_oldpwd_env(env, old_path);
+	return (free(old_path), free(new_path), 0);
 }
