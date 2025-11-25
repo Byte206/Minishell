@@ -39,6 +39,7 @@ static char	*get_old_path(t_env **env)
 		return (ft_strdup(pwd_value));
 	return (NULL);
 }
+
 static char	*get_target_path(char *path, char *old_path, t_env **env)
 {
 	char	*target_path;

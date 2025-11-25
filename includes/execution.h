@@ -17,26 +17,22 @@ typedef struct s_env
 	char			*value;
 	struct s_env	*prev;
 	struct s_env	*next;
-}	t_env;
+}					t_env;
 
-//env functions
-t_env	*init_env(char **envp);
-char 	*get_name(char *var);
-char 	*get_value(char *var);
+// env functions
+t_env				*init_env(char **envp);
+char				*get_name(char *var);
+char				*get_value(char *var);
 
+// execution
+int					execution(t_ast *ast, t_env **env, int exit_code);
 
-//execution
-int	execution(t_ast *ast, t_env **env, int exit_code);
-
-
-//built-in functions
-int 	ft_pwd(t_cmd *cmd);
-int		ft_echo(char **argv);
-int		ft_cd(t_cmd *cmd, t_env **env);
-int		ft_env(t_cmd *cmd, t_env **env);
-int		ft_exit(t_ast *ast, int exit_code);
-int		ft_export(t_cmd *cmd, t_env **env);
-int     print_sorted_env(t_env **env);
-int		ft_unset(t_cmd *cmd, t_env **env);
-
-
+// built-in functions
+int					ft_pwd(t_cmd *cmd);
+int					ft_echo(char **argv);
+int					ft_cd(t_cmd *cmd, t_env **env);
+int					ft_env(t_cmd *cmd, t_env **env);
+int					ft_exit(t_ast *ast, int exit_code);
+int					ft_export(t_cmd *cmd, t_env **env);
+int					print_sorted_env(t_env **env);
+int					ft_unset(t_cmd *cmd, t_env **env);

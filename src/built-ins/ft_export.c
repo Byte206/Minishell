@@ -79,9 +79,7 @@ int	ft_export(t_cmd *cmd, t_env **env)
 		if (!is_valid_identifier(name))
 		{
 			export_not_valid(name);
-			free(name);
-			free(value);
-			return (1);
+			return (free(name), free(value), 1);
 		}
 		value = ft_strchr(cmd->argv[i], '=') ? value : ft_strdup("");
 		add_or_update_env(env, name, value);
