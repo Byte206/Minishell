@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-static char *get_value_from_env(const char *name, t_env **env)
+static char	*get_value_from_env(const char *name, t_env **env)
 {
 	t_env	*current;
 
@@ -26,10 +26,10 @@ static char *get_value_from_env(const char *name, t_env **env)
 	return (NULL);
 }
 
-static char *get_old_path(t_env **env)
+static char	*get_old_path(t_env **env)
 {
-	char *cwd;
-	char *pwd_value;
+	char	*cwd;
+	char	*pwd_value;
 
 	cwd = getcwd(NULL, 0);
 	if (cwd)
@@ -39,9 +39,9 @@ static char *get_old_path(t_env **env)
 		return (ft_strdup(pwd_value));
 	return (NULL);
 }
-static char *get_target_path(char *path, char *old_path, t_env **env)
+static char	*get_target_path(char *path, char *old_path, t_env **env)
 {
-	char *target_path;
+	char	*target_path;
 
 	if (!path)
 	{
@@ -65,7 +65,32 @@ static char *get_target_path(char *path, char *old_path, t_env **env)
 		return (ft_strdup(target_path));
 	}
 	return (ft_strdup(path));
+}
 
+void	update_env_path(t_env **env, char *old_path)
+{
+	t_env	*current;
+	char	*new_cwd;
+
+	new_cwd = getcwd(NULL, 0);
+	if (!new_cwd)
+		return ;
+	current = *env;
+	while (current)
+	{
+		if (ft_strcmp(current->name, "OLDPWD") == 0)
+		{
+			free(current->value);
+			current->value = ft_strdup(old_path);
+		}
+		else if (ft_strcmp(current->name, "PWD") == 0)
+		{
+			free(current->value);
+			current->value = ft_strdup(new_cwd);
+		}
+		current = current->next;
+	}
+	free(new_cwd);
 }
 
 int	ft_cd(t_cmd *cmd, t_env **env)
@@ -92,7 +117,6 @@ int	ft_cd(t_cmd *cmd, t_env **env)
 		free(old_path);
 		return (1);
 	}
-	//update_env_path(env);
-	//update_oldpwd_env(env, old_path);
+	update_env_path(env, old_path);
 	return (free(old_path), free(new_path), 0);
 }
