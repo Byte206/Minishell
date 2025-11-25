@@ -63,6 +63,13 @@ void	add_or_update_env(t_env **env, char *name, char *value)
 	*env = new_node;
 }
 
+static void	free_export_vars(char *name, char *value)
+{
+	free(name);
+	if (value)
+		free(value);
+}
+
 int	ft_export(t_cmd *cmd, t_env **env)
 {
 	int		i;
@@ -79,12 +86,13 @@ int	ft_export(t_cmd *cmd, t_env **env)
 		if (!is_valid_identifier(name))
 		{
 			export_not_valid(name);
-			return (free(name), free(value), 1);
+			free_export_vars(name, value);
+			return (1);
 		}
-		value = ft_strchr(cmd->argv[i], '=') ? value : ft_strdup("");
+		if (!value && ft_strchr(cmd->argv[i], '='))
+			value = ft_strdup("");
 		add_or_update_env(env, name, value);
-		free(name);
-		free(value);
+		free_export_vars(name, value);
 		i++;
 	}
 	return (0);
