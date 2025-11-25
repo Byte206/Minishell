@@ -11,9 +11,10 @@
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-char    *get_name(char *var)
+
+char	*get_name(char *var)
 {
-	char    *sign;
+	char	*sign;
 
 	if (!var)
 		return (NULL);
@@ -23,9 +24,9 @@ char    *get_name(char *var)
 	return (ft_substr(var, 0, sign - var));
 }
 
-char    *get_value(char *var)
+char	*get_value(char *var)
 {
-	char    *sign;
+	char	*sign;
 
 	if (!var)
 		return (NULL);

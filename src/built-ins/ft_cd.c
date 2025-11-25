@@ -12,43 +12,43 @@
 
 #include "../../includes/minishell.h"
 
-static void call_export(char *name, char *value, t_env **env)
+static void	call_export(char *name, char *value, t_env **env)
 {
-    char *var;
-    t_cmd *cmd;
+	char	*var;
+	t_cmd	*cmd;
 
-    cmd->argv = malloc(sizeof(char *) * 2);
-    var = ft_strjoin(name, "=");
-    var = ft_strjoin(var, value);
-    cmd->argv[0] = var;
-    cmd->argv[1] = NULL;
-    cmd->cmd_name = "export";
-    cmd->redirections = NULL;
-    cmd->next = NULL;
-    ft_export(cmd, env);
-    free(var);
-    free(cmd->argv);
-    free(cmd);
-    return (0);
+	cmd->argv = malloc(sizeof(char *) * 2);
+	var = ft_strjoin(name, "=");
+	var = ft_strjoin(var, value);
+	cmd->argv[0] = var;
+	cmd->argv[1] = NULL;
+	cmd->cmd_name = "export";
+	cmd->redirections = NULL;
+	cmd->next = NULL;
+	ft_export(cmd, env);
+	free(var);
+	free(cmd->argv);
+	free(cmd);
+	return ;
 }
 
-int		ft_cd(t_cmd *cmd, t_env **env)
+int	ft_cd(t_cmd *cmd, t_env **env)
 {
-    char    *new_path;
-    char    *old_path;
+	char	*new_path;
+	char	*old_path;
 
-    old_path = getcwd(NULL, 0);
-    if (chdir(cmd->argv[1]) != 0)
-    {
-        perror("cd");
-        free(old_path);
-        return (1);
-    }
-    new_path = getcwd(NULL, 0);
-    // Update PWD and OLDPWD in the environment list
-    call_export("OLDPWD", old_path, env);
-    call_export("PWD", new_path, env);
-    free(old_path);
-    free(new_path);
-    return (0);
+	old_path = getcwd(NULL, 0);
+	if (chdir(cmd->argv[1]) != 0)
+	{
+		perror("cd");
+		free(old_path);
+		return (1);
+	}
+	new_path = getcwd(NULL, 0);
+	// Update PWD and OLDPWD in the environment list
+	call_export("OLDPWD", old_path, env);
+	call_export("PWD", new_path, env);
+	free(old_path);
+	free(new_path);
+	return (0);
 }

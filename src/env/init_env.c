@@ -12,9 +12,9 @@
 
 #include "../../includes/minishell.h"
 
-static t_env *create_env_node(char *env_str);
-static void  add_env_node(t_env **head, t_env *node);
-static void  create_default_env(t_env **head);
+static t_env	*create_env_node(char *env_str);
+static void		add_env_node(t_env **head, t_env *node);
+static void		create_default_env(t_env **head);
 
 t_env	*init_env(char **envp)
 {
@@ -25,11 +25,10 @@ t_env	*init_env(char **envp)
 	set_signals();
 	env_list = NULL;
 	i = 0;
-	
-	if (!envp || !envp[0]) 
+	if (!envp || !envp[0])
 	{
 		create_default_env(&env_list);
-		return (env_list);		
+		return (env_list);
 	}
 	while (envp[i])
 	{
@@ -41,11 +40,11 @@ t_env	*init_env(char **envp)
 	return (env_list);
 }
 
-static t_env *create_env_node(char *env_str)
+static t_env	*create_env_node(char *env_str)
 {
-	char    *name;
-	char    *value;
-	t_env   *node;
+	char	*name;
+	char	*value;
+	t_env	*node;
 
 	if (!env_str)
 		return (NULL);
@@ -71,9 +70,9 @@ static t_env *create_env_node(char *env_str)
 	return (node);
 }
 
-static void add_env_node(t_env **head, t_env *node)
+static void	add_env_node(t_env **head, t_env *node)
 {
-	t_env *tail;
+	t_env	*tail;
 
 	if (!head || !node)
 		return ;
@@ -89,10 +88,10 @@ static void add_env_node(t_env **head, t_env *node)
 	node->prev = tail;
 }
 
-static void create_default_env(t_env **head)
+static void	create_default_env(t_env **head)
 {
-	t_env *node;
-	char *cwd;
+	t_env	*node;
+	char	*cwd;
 
 	if (!head)
 		return ;

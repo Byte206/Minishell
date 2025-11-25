@@ -63,7 +63,6 @@ void	add_or_update_env(t_env **env, char *name, char *value)
 	*env = new_node;
 }
 
-
 int	ft_export(t_cmd *cmd, t_env **env)
 {
 	int		i;
