@@ -6,97 +6,102 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 15:07:10 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/25 10:43:36 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/11/25 11:09:04 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
 
-static int	env_size(t_env *env)
-{
-	int		i;
+#include <stdlib.h>
+#include <stdio.h>
 
-	i = 0;
-	while (env)
-	{
-		i++;
-		env = env->next;
-	}
-	return (i);
+// Función auxiliar para contar nodos
+static int count_env_nodes(t_env *env)
+{
+    int count;
+    
+    count = 0;
+    while (env)
+    {
+        count++;
+        env = env->next;
+    }
+    return (count);
 }
 
-static int	safe_cmp(t_env *a, t_env *b)
+
+// Función auxiliar para crear array de punteros
+static t_env **create_env_array(t_env *env, int size)
 {
-	if (!a->name && !b->name)
-		return (0);
-	if (!a->name)
-		return (1);
-	if (!b->name)
-		return (-1);
-	return (strcmp(a->name, b->name));
+    t_env   **arr;
+    int     i;
+    
+    arr = malloc(sizeof(t_env *) * size);
+    if (!arr)
+        return (NULL);
+    i = 0;
+    while (env)
+    {
+        arr[i++] = env;
+        env = env->next;
+    }
+    return (arr);
 }
 
-static void	swap_env(t_env **a, t_env **b)
+// Función para ordenar el array (bubble sort)
+static void sort_env_array(t_env **arr, int size)
 {
-	t_env	*tmp;
-
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
+    int     i;
+    int     j;
+    t_env   *tmp;
+    
+    i = 0;
+    while (i < size - 1)
+    {
+        j = 0;
+        while (j < size - i - 1)
+        {
+            if (ft_strcmp(arr[j]->name, arr[j + 1]->name) > 0)
+            {
+                tmp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = tmp;
+            }
+            j++;
+        }
+        i++;
+    }
 }
 
-static void	sort_env(t_env **arr, int size)
+// Función para imprimir una variable de entorno
+static void print_env_var(t_env *node)
 {
-	int		i;
-	int		j;
-
-	i = 0;
-	while (i < size - 1)
-	{
-		j = 0;
-		while (j < size - i - 1)
-		{
-			if (safe_cmp(arr[j], arr[j + 1]) > 0)
-				swap_env(&arr[j], &arr[j + 1]);
-			j++;
-		}
-		i++;
-	}
+    printf("declare -x %s", node->name);
+    if (node->value && node->value[0])
+        printf("=\"%s\"", node->value);
+    printf("\n");
 }
 
-void	print_env_sorted(t_env *env)
+// Función principal - CAMBIADA LA FIRMA
+void print_env_sorted(t_env **env)
 {
-	int		i;
-	int		size;
-	t_env	**arr;
-
-	if (!env)
-		return ;
-	size = env_size(env);
-	if (size <= 0)
-		return ;
-	arr = malloc(sizeof(t_env *) * size);
-	if (!arr)
-		return ;
-	i = 0;
-	while (env)
-	{
-		arr[i++] = env;
-		env = env->next;
-	}
-	sort_env(arr, size);
-	i = 0;
-	while (i < size)
-	{
-		if (arr[i]->name)
-		{
-			if (arr[i]->value)
-				printf("%s=%s\n", arr[i]->name, arr[i]->value);
-			else
-				printf("%s\n", arr[i]->name);
-		}
-		i++;
-	}
-	free(arr);
+    t_env   **arr;
+    int     size;
+    int     i;
+    
+    if (!env || !*env)
+        return ;
+    size = count_env_nodes(*env);
+    arr = create_env_array(*env, size);
+    if (!arr)
+        return ;
+    sort_env_array(arr, size);
+    i = 0;
+    while (i < size)
+    {
+        print_env_var(arr[i]);
+        i++;
+    }
+    free(arr);
 }
