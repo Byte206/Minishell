@@ -27,19 +27,19 @@ typedef enum e_token_type
 
 typedef enum e_quote_type
 {
-    QUOTE_NONE,
-    QUOTE_SINGLE,
-    QUOTE_DOUBLE
-}   t_quote_type;
+	QUOTE_NONE,
+	QUOTE_SINGLE,
+	QUOTE_DOUBLE
+}					t_quote_type;
 
 typedef struct s_token
 {
-    char            *value;
-    t_token_type    type;
-    t_quote_type    quote_type;
-    int             joined;
-    struct s_token  *next;
-}   t_token;
+	char			*value;
+	t_token_type	type;
+	t_quote_type	quote_type;
+	int				joined;
+	struct s_token	*next;
+}					t_token;
 
 typedef struct s_parser_state
 {

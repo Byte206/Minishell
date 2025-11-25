@@ -28,6 +28,8 @@
 # include <signal.h>
 # include "execution.h"
 # include <fcntl.h>
+# include <stdint.h>
+# include <limits.h>
 
 extern int g_signal;
 

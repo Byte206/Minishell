@@ -28,7 +28,7 @@ static int	is_builtin(char *cmd_name)
 	return (0);
 }
 
-static int	exec_builtin(t_ast *ast, t_env **env)
+static int	exec_builtin(t_ast *ast, t_env **env, int exit_code)
 {
 	if (ft_strncmp(ast->commands->cmd_name, "cd", 3) == 0)
 		return (ft_cd(ast->commands, env));
@@ -37,7 +37,7 @@ static int	exec_builtin(t_ast *ast, t_env **env)
 	else if (ft_strncmp(ast->commands->cmd_name, "env", 4) == 0)
 		return (ft_env(ast->commands, env));
 	else if (ft_strncmp(ast->commands->cmd_name, "exit", 5) == 0)
-		return (ft_exit(ast->commands));
+		return (ft_exit(ast, exit_code));
 	else if (ft_strncmp(ast->commands->cmd_name, "export", 7) == 0)
 		return (ft_export(ast->commands, env));
 	else if (ft_strncmp(ast->commands->cmd_name, "pwd", 4) == 0)
@@ -59,13 +59,13 @@ static int	father(int pid)
 	return (1);
 }
 
-static int	exec_single_cmd(t_ast *ast, t_env **env)
+static int	exec_single_cmd(t_ast *ast, t_env **env, int exit_code)
 {
 	int		pid;
 	char	*path;
 
 	if (is_builtin(ast->commands->cmd_name))
-		return (exec_builtin(ast, env));
+		return (exec_builtin(ast, env, exit_code));
 	pid = fork();
 	if (pid == 0)
 	{
@@ -85,12 +85,12 @@ static int	exec_single_cmd(t_ast *ast, t_env **env)
 		return (father(pid));
 }
 
-int	execution(t_ast *ast, t_env **env)
+int	execution(t_ast *ast, t_env **env, int exit_code)
 {
 	if (!ast)
 		return (1);
 	if (!ast->commands->next)
-		return (exec_single_cmd(ast, env));
+		exit_code = (exec_single_cmd(ast, env, exit_code));
 	// return (exec_with_pipe(ast, env));
-	return (0);
+	return (exit_code);
 }

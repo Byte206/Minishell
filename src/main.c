@@ -57,15 +57,17 @@ int	main(int argc, char **argv, char **envp)
 			if (tokens)
 			{
 				ast = parser(tokens);
+				free_tokens(tokens);
+				free(input);
 				if (ast)
 				{
-					execution(ast, &env);
+					execution(ast, &env, 0);
 					free_ast(ast);
 				}
-				free_tokens(tokens);
+				//free_tokens(tokens);
 			}
 		}
-		free(input);
+		//free(input);
 	}
 	return (0);
 }
