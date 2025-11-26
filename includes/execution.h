@@ -36,3 +36,7 @@ int					ft_exit(t_ast *ast, int exit_code);
 int					ft_export(t_cmd *cmd, t_env **env);
 int					print_sorted_env(t_env **env);
 int					ft_unset(t_cmd *cmd, t_env **env);
+
+// set_path functions
+char				*look_for_exec_in_cwd(char *cmd_name);
+char				*set_path(char *cmd_name, t_env *env);
