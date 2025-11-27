@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: byte <byte@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:38:53 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/23 20:02:08 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/11/27 20:39:50 by byte             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ char				*get_value(char *var);
 
 // execution
 int					execution(t_ast *ast, t_env **env, int exit_code);
+	int					execute_multiple_commands(t_ast *ast, t_env **env);
 
 // built-in functions
 int					ft_pwd(t_cmd *cmd);
@@ -34,9 +35,16 @@ int					ft_cd(t_cmd *cmd, t_env **env);
 int					ft_env(t_cmd *cmd, t_env **env);
 int					ft_exit(t_ast *ast, int exit_code);
 int					ft_export(t_cmd *cmd, t_env **env);
-int					print_sorted_env(t_env **env);
+int					print_env_sorted(t_env **env);
 int					ft_unset(t_cmd *cmd, t_env **env);
 
 // set_path functions
 char				*look_for_exec_in_cwd(char *cmd_name);
 char				*set_path(char *cmd_name, t_env *env);
+char				**env_to_char_array(t_env *env);
+
+//Redir functions
+void set_redirections(t_redir *redirections);
+
+//signla
+void	set_signals();

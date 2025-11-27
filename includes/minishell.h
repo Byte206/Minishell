@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: byte <byte@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 16:10:00 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/11/20 14:39:08 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/11/27 20:36:02 by byte             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@
 # include <fcntl.h>
 # include <stdint.h>
 # include <limits.h>
+#include <sys/wait.h>
+//expanser
+# include "expander.h"
 
 extern int g_signal;
 

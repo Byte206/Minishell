@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: byte <byte@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 14:30:23 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/11/23 20:05:40 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/11/27 20:30:34 by byte             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ int	main(int argc, char **argv, char **envp)
 	t_token	*tokens;
 	t_ast	*ast;
 	t_env	*env;
+	int		exit_code;
 
+	exit_code = 0;
 	if (argc != 1 || argv[1])
 		return (1);
 	env = init_env(envp);
@@ -56,12 +58,13 @@ int	main(int argc, char **argv, char **envp)
 			tokens = lexer(input);
 			if (tokens)
 			{
+				expander(tokens, env, exit_code);
 				ast = parser(tokens);
 				free_tokens(tokens);
 				free(input);
 				if (ast)
 				{
-					execution(ast, &env, 0);
+					execution(ast, &env, exit_code);
 					free_ast(ast);
 				}
 				//free_tokens(tokens);
