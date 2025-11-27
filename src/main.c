@@ -6,7 +6,7 @@
 /*   By: byte <byte@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 14:30:23 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/11/27 20:30:34 by byte             ###   ########.fr       */
+/*   Updated: 2025/11/27 20:57:12 by byte             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	main(int argc, char **argv, char **envp)
 				free(input);
 				if (ast)
 				{
-					execution(ast, &env, exit_code);
+					exit_code = execution(ast, &env, exit_code);
 					free_ast(ast);
 				}
 				//free_tokens(tokens);
