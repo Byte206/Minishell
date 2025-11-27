@@ -6,7 +6,7 @@
 /*   By: byte <byte@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 14:30:23 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/11/27 20:57:12 by byte             ###   ########.fr       */
+/*   Updated: 2025/11/27 21:01:02 by byte             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,22 @@ static void	print_env_list(t_env *env)
 		cur = cur->next;
 	}
 	printf("--- END ENV LIST ---\n");
+}
+
+void	free_env(t_env *env)
+{
+	t_env	*tmp;
+
+	while (env)
+	{
+		tmp = env;
+		env = env->next;
+		if (tmp->name)
+			free(tmp->name);
+		if (tmp->value)
+			free(tmp->value);
+		free(tmp);
+	}
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -67,10 +83,9 @@ int	main(int argc, char **argv, char **envp)
 					exit_code = execution(ast, &env, exit_code);
 					free_ast(ast);
 				}
-				//free_tokens(tokens);
 			}
 		}
-		//free(input);
 	}
+	free_env(env);
 	return (0);
 }
