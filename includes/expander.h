@@ -1,7 +1,8 @@
-char *handle_valid_variable(char *result, char *var_name, t_env *env,
-    int exit_status);
-char *append_char_to_result(char *result, char c);
-char  *get_env_value(t_env *env, char *name);
-void expander(t_token *tokens, t_env *env, int exit_status);
-char *get_var_name(char *str, int *len);
-char *get_var_value(t_env *env, char *var_name, int *should_free, int exit_status);
+char	*handle_valid_variable(char *result, char *var_name, t_env *env,
+			int exit_status);
+char	*append_char_to_result(char *result, char c);
+char	*get_env_value(t_env *env, char *name);
+void	expander(t_token *tokens, t_env *env, int exit_status);
+char	*get_var_name(char *str, int *len);
+char	*get_var_value(t_env *env, char *var_name, int *should_free,
+			int exit_status);

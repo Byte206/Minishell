@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tu_login <tu_email@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: byte <byte@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:38:53 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/30 08:37:35 by tu_login         ###   ########.fr       */
+/*   Updated: 2025/11/30 13:32:40 by byte             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char				*get_value(char *var);
 
 // execution
 int					execution(t_ast *ast, t_env **env, int exit_code);
-	int					execute_multiple_commands(t_ast *ast, t_env **env);
+int					execute_multiple_commands(t_ast *ast, t_env **env);
 
 // built-in functions
 int					ft_pwd(t_cmd *cmd);
@@ -44,7 +44,7 @@ char				*set_path(char *cmd_name, t_env *env);
 char				**env_to_char_array(t_env *env);
 
 // Redir functions
-int set_redirections(t_redir *redirections);
+int					set_redirections(t_redir *redirections);
 
-//signla
-void	set_signals();
+// signla
+void				set_signals(void);

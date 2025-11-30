@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution_utils.c                                  :+:      :+:    :+:   */
+/*   set_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gamorcil <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: byte <byte@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:24:30 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/24 12:24:36 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/11/30 13:34:36 by byte             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ char	**env_to_char_array(t_env *env)
 	env_array[count] = NULL;
 	return (env_array);
 }
+
 // Función para liberar el array de strings
 void	free_array(char **array)
 {

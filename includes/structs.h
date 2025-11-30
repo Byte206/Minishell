@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmonterd <bmonterd@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: byte <byte@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 14:19:56 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/11/15 20:12:23 by bmonterd         ###   ########.fr       */
+/*   Updated: 2025/11/30 13:33:25 by byte             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_STRUCTS_H
-# define MINISHELL_STRUCTS_H
+#ifndef STRUCTS_H
+# define STRUCTS_H
 
 # include <stdlib.h>
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_multiple_commands.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: byte <byte@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 13:14:08 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/30 09:00:13 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/11/30 13:18:43 by byte             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ static void	exec_child_builtin(t_cmd *cmd, t_env **env)
 		exit(ft_unset(cmd, env));
 }
 
-static void	child_execute(t_cmd *cmd, int prev_read, int pipe_write, t_env **env)
+static void	child_execute(t_cmd *cmd, int prev_read, int pipe_write,
+		t_env **env)
 {
 	if (prev_read != -1)
 	{

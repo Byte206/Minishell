@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tu_login <tu_email@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: byte <byte@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:34:58 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/30 08:49:25 by tu_login         ###   ########.fr       */
+/*   Updated: 2025/11/30 13:19:42 by byte             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,14 @@ static int	father(int pid)
 
 static int	exec_builtin_cmd(t_ast *ast, t_env **env, int exit_code)
 {
-	int saved_stdin = dup(STDIN_FILENO);
-	int saved_stdout = dup(STDOUT_FILENO);
-	int builtin_ret;
+	int	saved_stdin;
+	int	saved_stdout;
+	int	builtin_ret;
 
+	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
 	if (saved_stdin < 0 || saved_stdout < 0)
-	{	
+	{
 		if (saved_stdin >= 0)
 			close(saved_stdin);
 		if (saved_stdout >= 0)
@@ -78,8 +80,9 @@ static int	exec_builtin_cmd(t_ast *ast, t_env **env, int exit_code)
 		if (set_redirections(ast->commands->redirections) < 0)
 		{
 			dup2(saved_stdin, STDIN_FILENO);
-			dup2(saved_stdout, STDOUT_FILENO);;
-			return (close(saved_stdin), close(saved_stdout),1);
+			dup2(saved_stdout, STDOUT_FILENO);
+			;
+			return (close(saved_stdin), close(saved_stdout), 1);
 		}
 	}
 	builtin_ret = exec_builtin(ast, env, exit_code);
@@ -90,8 +93,8 @@ static int	exec_builtin_cmd(t_ast *ast, t_env **env, int exit_code)
 
 static int	exec_external_cmd(t_ast *ast, t_env **env)
 {
-	int pid;
-	char *path;
+	int		pid;
+	char	*path;
 
 	pid = fork();
 	if (pid == 0)
