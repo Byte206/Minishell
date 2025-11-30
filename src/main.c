@@ -3,37 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: byte <byte@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 14:30:23 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/11/27 21:01:02 by byte             ###   ########.fr       */
+/*   Updated: 2025/11/30 19:05:11 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 int			g_signal = 0;
-
-static void	print_env_list(t_env *env)
-{
-	t_env	*cur;
-
-	cur = env;
-	printf("--- ENV LIST DUMP ---\n");
-	while (cur)
-	{
-		if (cur->name)
-			printf("%s=", cur->name);
-		else
-			printf("(null)=");
-		if (cur->value)
-			printf("%s\n", cur->value);
-		else
-			printf("(null)\n");
-		cur = cur->next;
-	}
-	printf("--- END ENV LIST ---\n");
-}
 
 void	free_env(t_env *env)
 {

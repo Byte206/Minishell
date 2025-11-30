@@ -6,7 +6,7 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 10:37:34 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/25 10:39:37 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/11/30 19:06:15 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*get_old_path(t_env **env)
 	return (NULL);
 }
 
-static char	*get_target_path(char *path, char *old_path, t_env **env)
+static char	*get_target_path(char *path, t_env **env)
 {
 	char	*target_path;
 
@@ -105,7 +105,7 @@ int	ft_cd(t_cmd *cmd, t_env **env)
 		return (1);
 	}
 	old_path = get_old_path(env);
-	new_path = get_target_path(cmd->argv[1], old_path, env);
+	new_path = get_target_path(cmd->argv[1], env);
 	if (!new_path)
 	{
 		free(old_path);
