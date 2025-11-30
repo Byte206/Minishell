@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: byte <byte@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: tu_login <tu_email@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 16:10:00 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/11/27 20:36:02 by byte             ###   ########.fr       */
+/*   Updated: 2025/11/30 08:34:40 by tu_login         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # include <fcntl.h>
 # include <stdint.h>
 # include <limits.h>
-#include <sys/wait.h>
+# include <sys/wait.h>
 //expanser
 # include "expander.h"
 

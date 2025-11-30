@@ -1,0 +1,8 @@
+Makefile
+a.out
+hola.c
+includes
+libft
+minishell_debug
+prueba.txt
+src

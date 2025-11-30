@@ -1,11 +1,5 @@
 {
-    "files.associations": {
-        "stdlib.h": "c"
-    },
-    "42header.username": "tu_login",
-    "42header.email": "tu_email@student.42madrid.com",
     "[c]": {
         "editor.defaultFormatter": "keyhr.42-c-format"
-    },
-    "42-c-format.path": "/ruta/que/encontraste/c_formatter_42"
+    }
 }

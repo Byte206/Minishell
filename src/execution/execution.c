@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: tu_login <tu_email@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:34:58 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/23 20:14:57 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/11/30 08:49:25 by tu_login         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,48 @@ static int	father(int pid)
 	return (1);
 }
 
-static int	exec_single_cmd(t_ast *ast, t_env **env, int exit_code)
+static int	exec_builtin_cmd(t_ast *ast, t_env **env, int exit_code)
 {
-	int		pid;
-	char	*path;
+	int saved_stdin = dup(STDIN_FILENO);
+	int saved_stdout = dup(STDOUT_FILENO);
+	int builtin_ret;
 
-	if (is_builtin(ast->commands->cmd_name))
-		return (exec_builtin(ast, env, exit_code));
+	if (saved_stdin < 0 || saved_stdout < 0)
+	{	
+		if (saved_stdin >= 0)
+			close(saved_stdin);
+		if (saved_stdout >= 0)
+			close(saved_stdout);
+		return (perror("dup"), 1);
+	}
+	if (ast->commands->redirections)
+	{
+		if (set_redirections(ast->commands->redirections) < 0)
+		{
+			dup2(saved_stdin, STDIN_FILENO);
+			dup2(saved_stdout, STDOUT_FILENO);;
+			return (close(saved_stdin), close(saved_stdout),1);
+		}
+	}
+	builtin_ret = exec_builtin(ast, env, exit_code);
+	dup2(saved_stdin, STDIN_FILENO);
+	dup2(saved_stdout, STDOUT_FILENO);
+	return (close(saved_stdin), close(saved_stdout), builtin_ret);
+}
+
+static int	exec_external_cmd(t_ast *ast, t_env **env)
+{
+	int pid;
+	char *path;
+
 	pid = fork();
 	if (pid == 0)
 	{
+		if (ast->commands->redirections)
+		{
+			if (set_redirections(ast->commands->redirections) < 0)
+				exit(1);
+		}
 		// set_signals_child();
 		path = set_path(ast->commands->cmd_name, *env);
 		if (!path)
@@ -80,8 +112,14 @@ static int	exec_single_cmd(t_ast *ast, t_env **env, int exit_code)
 		perror("execve");
 		exit(127);
 	}
-	else
-		return (father(pid));
+	return (father(pid));
+}
+
+static int	exec_single_cmd(t_ast *ast, t_env **env, int exit_code)
+{
+	if (is_builtin(ast->commands->cmd_name))
+		return (exec_builtin_cmd(ast, env, exit_code));
+	return (exec_external_cmd(ast, env));
 }
 
 int	execution(t_ast *ast, t_env **env, int exit_code)
@@ -91,7 +129,6 @@ int	execution(t_ast *ast, t_env **env, int exit_code)
 	set_signals();
 	if (!ast->commands->next)
 	{
-		set_redirections(ast->commands->redirections);
 		exit_code = (exec_single_cmd(ast, env, exit_code));
 	}
 	else
