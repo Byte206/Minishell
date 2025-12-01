@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_multiple_commands.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: byte <byte@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 13:14:08 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/30 13:18:43 by byte             ###   ########.fr       */
+/*   Updated: 2025/12/01 13:12:38 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ static int	spawn_pipeline(t_ast *ast, t_env **env, int *pids)
 		pids[i] = fork();
 		if (pids[i] == 0)
 		{
+			set_child_signals();
 			if (cmd->next)
 				close(pipefd[0]);
 			child_execute(cmd, prev_read, (cmd->next) ? pipefd[1] : -1, env);
@@ -159,12 +160,15 @@ int	execute_multiple_commands(t_ast *ast, t_env **env)
 	pids = malloc(sizeof(int) * cmds_count);
 	if (!pids)
 		return (1);
+	set_execution_signals();
 	if (spawn_pipeline(ast, env, pids) != 0)
 	{
+		set_signals();
 		free(pids);
 		return (1);
 	}
 	status = wait_children(pids, cmds_count);
+	set_signals();
 	free(pids);
 	return (status);
 }

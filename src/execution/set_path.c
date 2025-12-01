@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: byte <byte@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 12:24:30 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/30 13:34:36 by byte             ###   ########.fr       */
+/*   Updated: 2025/12/01 13:18:44 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,12 @@ char	*set_path(char *cmd_name, t_env *env)
 {
 	char	*cmd_path;
 
+	if (ft_strchr(cmd_name, '/'))
+	{
+		if (access(cmd_name, X_OK) == 0)
+			return (ft_strdup(cmd_name));
+		return (NULL);
+	}
 	while (env)
 	{
 		if (ft_strncmp(env->name, "PATH", 5) == 0)

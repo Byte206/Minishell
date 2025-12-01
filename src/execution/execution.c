@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: byte <byte@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:34:58 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/30 13:19:42 by byte             ###   ########.fr       */
+/*   Updated: 2025/12/01 13:12:36 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static int	father(int pid)
 	int	status;
 
 	waitpid(pid, &status, 0);
+	set_signals();
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
@@ -96,15 +97,16 @@ static int	exec_external_cmd(t_ast *ast, t_env **env)
 	int		pid;
 	char	*path;
 
+	set_execution_signals();
 	pid = fork();
 	if (pid == 0)
 	{
+		set_child_signals();
 		if (ast->commands->redirections)
 		{
 			if (set_redirections(ast->commands->redirections) < 0)
 				exit(1);
 		}
-		// set_signals_child();
 		path = set_path(ast->commands->cmd_name, *env);
 		if (!path)
 		{

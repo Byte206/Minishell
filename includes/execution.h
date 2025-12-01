@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: byte <byte@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:38:53 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/30 13:32:40 by byte             ###   ########.fr       */
+/*   Updated: 2025/12/01 13:11:56 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,3 +48,5 @@ int					set_redirections(t_redir *redirections);
 
 // signla
 void				set_signals(void);
+void				set_child_signals(void);
+void				set_execution_signals(void);
