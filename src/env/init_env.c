@@ -6,7 +6,7 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 13:27:38 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/25 10:46:41 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/01 13:26:46 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,7 @@ static t_env	*create_env_node(char *env_str)
 	node = malloc(sizeof(t_env));
 	if (!node)
 	{
-		free(name);
-		free(value);
-		return (NULL);
+		return (free(value), free(name), NULL);
 	}
 	node->name = name;
 	node->value = value;

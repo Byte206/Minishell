@@ -6,29 +6,13 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:34:58 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/12/01 13:12:36 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/01 13:51:15 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static int	is_builtin(char *cmd_name)
-{
-	size_t	len;
-
-	len = ft_strlen(cmd_name);
-	if ((ft_strncmp(cmd_name, "cd", len) == 0 && len == 2)
-		|| (ft_strncmp(cmd_name, "echo", len) == 0 && len == 4)
-		|| (ft_strncmp(cmd_name, "env", len) == 0 && len == 3)
-		|| (ft_strncmp(cmd_name, "exit", len) == 0 && len == 4)
-		|| (ft_strncmp(cmd_name, "export", len) == 0 && len == 6)
-		|| (ft_strncmp(cmd_name, "pwd", len) == 0 && len == 3)
-		|| (ft_strncmp(cmd_name, "unset", len) == 0 && len == 5))
-		return (1);
-	return (0);
-}
-
-static int	exec_builtin(t_ast *ast, t_env **env, int exit_code)
+int	exec_builtin(t_ast *ast, t_env **env, int exit_code)
 {
 	if (ft_strncmp(ast->commands->cmd_name, "cd", 3) == 0)
 		return (ft_cd(ast->commands, env));
@@ -58,38 +42,6 @@ static int	father(int pid)
 	else if (WIFSIGNALED(status))
 		return (128 + WTERMSIG(status));
 	return (1);
-}
-
-static int	exec_builtin_cmd(t_ast *ast, t_env **env, int exit_code)
-{
-	int	saved_stdin;
-	int	saved_stdout;
-	int	builtin_ret;
-
-	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
-	if (saved_stdin < 0 || saved_stdout < 0)
-	{
-		if (saved_stdin >= 0)
-			close(saved_stdin);
-		if (saved_stdout >= 0)
-			close(saved_stdout);
-		return (perror("dup"), 1);
-	}
-	if (ast->commands->redirections)
-	{
-		if (set_redirections(ast->commands->redirections) < 0)
-		{
-			dup2(saved_stdin, STDIN_FILENO);
-			dup2(saved_stdout, STDOUT_FILENO);
-			;
-			return (close(saved_stdin), close(saved_stdout), 1);
-		}
-	}
-	builtin_ret = exec_builtin(ast, env, exit_code);
-	dup2(saved_stdin, STDIN_FILENO);
-	dup2(saved_stdout, STDOUT_FILENO);
-	return (close(saved_stdin), close(saved_stdout), builtin_ret);
 }
 
 static int	exec_external_cmd(t_ast *ast, t_env **env)

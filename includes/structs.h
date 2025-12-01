@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: byte <byte@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 14:19:56 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/11/30 13:33:25 by byte             ###   ########.fr       */
+/*   Updated: 2025/12/01 13:50:38 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,21 @@ typedef struct s_ast
 {
 	t_cmd			*commands;
 }					t_ast;
+
+// Environment variable linked list
+typedef struct s_env
+{
+	char			*name;
+	char			*value;
+	struct s_env	*prev;
+	struct s_env	*next;
+}					t_env;
+
+typedef struct s_expand_ctx
+{
+	char			*str;
+	t_env			*env;
+	int				exit_status;
+}					t_expand_ctx;
 
 #endif

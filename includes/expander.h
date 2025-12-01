@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gamorcil <gamorcil@student.42madrid.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/01 13:49:30 by gamorcil          #+#    #+#             */
+/*   Updated: 2025/12/01 13:49:32 by gamorcil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 char	*handle_valid_variable(char *result, char *var_name, t_env *env,
 			int exit_status);
 char	*append_char_to_result(char *result, char c);

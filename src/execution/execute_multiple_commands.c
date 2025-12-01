@@ -6,24 +6,11 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 13:14:08 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/12/01 13:12:38 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/01 13:52:06 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-static int	count_cmds(t_cmd *cmd)
-{
-	int	n;
-
-	n = 0;
-	while (cmd)
-	{
-		n++;
-		cmd = cmd->next;
-	}
-	return (n);
-}
 
 static void	exec_external_child(t_cmd *cmd, t_env **env)
 {
@@ -64,7 +51,7 @@ static void	exec_child_builtin(t_cmd *cmd, t_env **env)
 		exit(ft_unset(cmd, env));
 }
 
-static void	child_execute(t_cmd *cmd, int prev_read, int pipe_write,
+void	child_execute(t_cmd *cmd, int prev_read, int pipe_write,
 		t_env **env)
 {
 	if (prev_read != -1)
@@ -81,71 +68,6 @@ static void	child_execute(t_cmd *cmd, int prev_read, int pipe_write,
 		exit(1);
 	exec_child_builtin(cmd, env);
 	exec_external_child(cmd, env);
-}
-
-static int	wait_children(int *pids, int n)
-{
-	int	i;
-	int	status;
-
-	status = 0;
-	i = 0;
-	while (i < n)
-	{
-		waitpid(pids[i], &status, 0);
-		i++;
-	}
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
-	return (1);
-}
-
-static void	handle_parent_pipes(int *prev_read, int pipefd[2], int has_next)
-{
-	if (*prev_read != -1)
-		close(*prev_read);
-	if (has_next)
-	{
-		close(pipefd[1]);
-		*prev_read = pipefd[0];
-	}
-	else
-		*prev_read = -1;
-}
-
-static int	spawn_pipeline(t_ast *ast, t_env **env, int *pids)
-{
-	t_cmd	*cmd;
-	int		prev_read;
-	int		pipefd[2];
-	int		i;
-
-	prev_read = -1;
-	cmd = ast->commands;
-	i = 0;
-	while (cmd)
-	{
-		if (cmd->next && pipe(pipefd) == -1)
-			return (perror("pipe"), 1);
-		pids[i] = fork();
-		if (pids[i] == 0)
-		{
-			set_child_signals();
-			if (cmd->next)
-				close(pipefd[0]);
-			child_execute(cmd, prev_read, (cmd->next) ? pipefd[1] : -1, env);
-		}
-		if (pids[i] < 0)
-			return (perror("fork"), 1);
-		handle_parent_pipes(&prev_read, pipefd, (cmd->next != NULL));
-		cmd = cmd->next;
-		i++;
-	}
-	if (prev_read != -1)
-		close(prev_read);
-	return (0);
 }
 
 int	execute_multiple_commands(t_ast *ast, t_env **env)

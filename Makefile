@@ -17,8 +17,11 @@ SRCS		= src/main.c \
 			  src/built-ins/ft_unset.c \
 			  src/env/init_env.c \
 			  src/env/init_env_utils.c \
+			  src/execution/exec_builtin.c \
 			  src/execution/execute_multiple_commands.c \
 			  src/execution/execution.c \
+			  src/execution/execution_utils.c \
+			  src/execution/pipes.c \
 			  src/execution/set_path.c \
 			  src/execution/set_path_utils.c \
 			  src/execution/set_redirections.c \

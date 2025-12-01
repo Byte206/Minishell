@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/01 13:22:32 by gamorcil          #+#    #+#             */
+/*   Updated: 2025/12/01 13:25:33 by gamorcil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
@@ -33,14 +44,13 @@ char	*get_var_value(t_env *env, char *var_name, int *should_free,
 	if (ft_strcmp(var_name, "?") == 0)
 	{
 		*should_free = 1;
-		return (ft_itoa(exit_status)); // ✅ Usa el parámetro
+		return (ft_itoa(exit_status));
 	}
 	value = get_env_value(env, var_name);
 	return (value);
 }
 
-static char	*process_variable(char *result, char *str, int *i, t_env *env,
-		int exit_status)
+static char	*process_variable(char *result, t_expand_ctx *ctx, int *i)
 {
 	char	*var_name;
 	int		var_len;
@@ -48,10 +58,11 @@ static char	*process_variable(char *result, char *str, int *i, t_env *env,
 	char	str_dollar[2];
 
 	(*i)++;
-	var_name = get_var_name(&str[*i], &var_len);
+	var_name = get_var_name(&ctx->str[*i], &var_len);
 	if (var_name)
 	{
-		result = handle_valid_variable(result, var_name, env, exit_status);
+		result = handle_valid_variable(result, var_name, ctx->env,
+				ctx->exit_status);
 		free(var_name);
 		*i += var_len;
 	}
@@ -69,16 +80,19 @@ static char	*process_variable(char *result, char *str, int *i, t_env *env,
 static char	*expand_string(char *str, t_env *env, t_quote_type quote_t,
 		int exit_status)
 {
-	char	*result;
-	int		i;
+	char			*result;
+	int				i;
+	t_expand_ctx	ctx;
 
+	ctx.str = str;
+	ctx.env = env;
+	ctx.exit_status = exit_status;
 	result = ft_strdup("");
 	i = 0;
 	while (str[i])
 	{
 		if (str[i] == '$' && quote_t != QUOTE_SINGLE)
-			result = process_variable(result, str, &i, env, exit_status);
-				// ✅ Pasa exit_status
+			result = process_variable(result, &ctx, &i);
 		else
 		{
 			result = append_char_to_result(result, str[i]);
