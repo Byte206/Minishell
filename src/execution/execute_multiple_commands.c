@@ -16,6 +16,8 @@ static void	exec_external_child(t_cmd *cmd, t_env **env)
 {
 	char	*path;
 
+	if (!cmd->cmd_name || !*cmd->cmd_name)
+		exit(0);
 	path = set_path(cmd->cmd_name, *env);
 	if (!path)
 	{

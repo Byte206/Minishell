@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gamorcil <gamorcil@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 11:46:19 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/24 11:46:20 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/08 23:54:02 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 static void	export_not_valid(char *name)
 {
 	ft_putstr_fd("export: `", 2);
-	ft_putstr_fd(name, 2);
+	if (name)
+		ft_putstr_fd(name, 2);
+	else
+		ft_putstr_fd("", 2);
 	ft_putstr_fd("': not a valid identifier\n", 2);
 }
 
@@ -83,15 +86,31 @@ int	ft_export(t_cmd *cmd, t_env **env)
 	{
 		name = get_name(cmd->argv[i]);
 		value = get_value(cmd->argv[i]);
+		if (!name)
+		{
+			name = ft_strdup(cmd->argv[i]);
+			if (!is_valid_identifier(name))
+			{
+				export_not_valid(cmd->argv[i]);
+				free(name);
+				return (1);
+			}
+			value = ft_strdup("");
+			add_or_update_env(env, name, value);
+			free_export_vars(name, value);
+			i++;
+			continue ;
+		}
 		if (!is_valid_identifier(name))
 		{
-			export_not_valid(name);
+			export_not_valid(cmd->argv[i]);
 			free_export_vars(name, value);
 			return (1);
 		}
 		if (!value && ft_strchr(cmd->argv[i], '='))
 			value = ft_strdup("");
-		add_or_update_env(env, name, value);
+		if (value)
+			add_or_update_env(env, name, value);
 		free_export_vars(name, value);
 		i++;
 	}

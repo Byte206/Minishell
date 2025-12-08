@@ -27,6 +27,7 @@ SRCS		= src/main.c \
 			  src/execution/set_redirections.c \
 			  src/expanser/expander.c \
 			  src/expanser/expander_utils.c \
+			  src/expanser/field_split.c \
 			  src/lexer/lexer.c \
 			  src/lexer/lexer_utils.c \
 			  src/lexer/tokenizer.c \
