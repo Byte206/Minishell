@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gamorcil <gamorcil@student.42madrid.com>   +#+  +:+       +#+        */
+/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 09:56:40 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/11/02 11:01:56 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/08 23:23:07 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+static int	check_newline(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i] == '-' && str[i + 1] == 'n')
+	{
+		i += 2;
+		while (str[i] == 'n')
+			i++;
+		if (str[i] == '\0')
+			return (0);
+		else
+			return (1);
+	}
+	return (1);
+}
 
 int	ft_echo(char **argv)
 {
@@ -18,12 +36,9 @@ int	ft_echo(char **argv)
 	int	i;
 
 	i = 1;
-	new_line = 1;
-	if (argv[1] && !ft_strncmp(argv[1], "-n", 3))
-	{
-		i = 2;
-		new_line = 0;
-	}
+	new_line = check_newline(argv[1]);
+	if (new_line == 0)
+		i++;
 	while (argv[i])
 	{
 		printf("%s", argv[i]);
