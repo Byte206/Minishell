@@ -6,7 +6,7 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 14:30:23 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/12/01 13:15:03 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/09 00:06:10 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1 || argv[1])
 		return (1);
 	env = init_env(envp);
+	printf("Welcome to minishell\n");
 	shell_loop(&env, &exit_code);
 	free_env(env);
 	return (0);

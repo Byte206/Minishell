@@ -6,7 +6,7 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 13:14:08 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/12/01 13:52:06 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/09 00:05:13 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	exec_external_child(t_cmd *cmd, t_env **env)
 {
 	char	*path;
 
+	printf("exec_external_child called, cmd_name: '%s'\n", cmd->cmd_name ? cmd->cmd_name : "NULL");
 	if (!cmd->cmd_name || !*cmd->cmd_name)
 		exit(0);
 	path = set_path(cmd->cmd_name, *env);

@@ -6,7 +6,7 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:34:58 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/12/01 13:51:15 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/09 00:13:47 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ static int	exec_single_cmd(t_ast *ast, t_env **env, int exit_code)
 {
 	if (is_builtin(ast->commands->cmd_name))
 		return (exec_builtin_cmd(ast, env, exit_code));
+	if (!ast->commands->cmd_name || !*ast->commands->cmd_name)
+		return (0);
 	return (exec_external_cmd(ast, env));
 }
 
