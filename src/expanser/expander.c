@@ -6,7 +6,7 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 13:22:32 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/12/01 13:25:33 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/08 23:33:01 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ void	expander(t_token *tokens, t_env *env, int exit_status)
 {
 	t_token	*current;
 	char	*expanded;
+	char    **parts;
+	int     i;
 
 	current = tokens;
 	while (current)
@@ -114,8 +116,76 @@ void	expander(t_token *tokens, t_env *env, int exit_status)
 		{
 			expanded = expand_string(current->value, env, current->quote_type,
 					exit_status);
-			free(current->value);
-			current->value = expanded;
+			/* Field splitting: if unquoted and expansion introduces spaces,
+			 * split into multiple TOKEN_WORD tokens so argv becomes [cmd, args]. */
+			if (current->quote_type == QUOTE_NONE && expanded)
+			{
+				/* normalize tabs to spaces for splitting */
+				i = 0;
+				while (expanded[i])
+				{
+					if (expanded[i] == '\t')
+						expanded[i] = ' ';
+					i++;
+				}
+				parts = ft_split(expanded, ' ');
+				if (parts && parts[0] && parts[1])
+				{
+					t_token *insert_after = current;
+					t_token *newtok;
+					int      j = 0;
+
+					/* set current to first part */
+					free(current->value);
+					current->value = ft_strdup(parts[0]);
+					current->joined = 0;
+					/* insert subsequent parts as separate tokens */
+					j = 1;
+					while (parts[j])
+					{
+						if (parts[j][0] != '\0')
+						{
+							newtok = new_token();
+							if (newtok)
+							{
+								newtok->value = ft_strdup(parts[j]);
+								newtok->type = TOKEN_WORD;
+								newtok->quote_type = QUOTE_NONE;
+								newtok->joined = 0;
+								newtok->next = insert_after->next;
+								insert_after->next = newtok;
+								insert_after = newtok;
+							}
+						}
+						j++;
+					}
+				}
+				else
+				{
+					/* no split needed or empty result */
+					free(current->value);
+					current->value = expanded;
+					expanded = NULL; /* avoid double free below */
+				}
+				/* free temporary resources */
+				if (parts)
+				{
+					i = 0;
+					while (parts[i])
+					{
+						free(parts[i]);
+						i++;
+					}
+					free(parts);
+				}
+				if (expanded)
+					free(expanded);
+			}
+			else
+			{
+				free(current->value);
+				current->value = expanded;
+			}
 		}
 		current = current->next;
 	}
