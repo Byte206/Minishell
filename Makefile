@@ -13,6 +13,7 @@ SRCS		= src/main.c \
 			  src/built-ins/ft_exit.c \
 			  src/built-ins/ft_export.c \
 			  src/built-ins/ft_export_utils.c \
+			  src/built-ins/ft_export_utils2.c \
 			  src/built-ins/ft_pwd.c \
 			  src/built-ins/ft_unset.c \
 			  src/env/init_env.c \
@@ -21,13 +22,17 @@ SRCS		= src/main.c \
 			  src/execution/execute_multiple_commands.c \
 			  src/execution/execution.c \
 			  src/execution/execution_utils.c \
+			  src/execution/execution_utils2.c \
+			  src/execution/heredoc_utils.c \
 			  src/execution/pipes.c \
 			  src/execution/set_path.c \
 			  src/execution/set_path_utils.c \
 			  src/execution/set_redirections.c \
+			  src/execution/set_redirections_utils.c \
 			  src/expanser/expander.c \
 			  src/expanser/expander_utils.c \
 			  src/expanser/field_split.c \
+			  src/expanser/field_split_utils.c \
 			  src/lexer/lexer.c \
 			  src/lexer/lexer_utils.c \
 			  src/lexer/tokenizer.c \

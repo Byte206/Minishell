@@ -6,7 +6,7 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 13:49:30 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/12/08 23:42:58 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/11 19:49:53 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,3 +19,7 @@ char	*get_var_name(char *str, int *len);
 char	*get_var_value(t_env *env, char *var_name, int *should_free,
 			int exit_status);
 void	apply_field_splitting(t_token *current, char *expanded);
+void	normalize_tabs(char *s);
+void	free_parts(char **parts);
+void	create_new_token(t_token **after, char *value);
+void	insert_remaining_parts(t_token *after, char **parts);

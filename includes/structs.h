@@ -6,7 +6,7 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 14:19:56 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/12/11 19:10:10 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/11 19:49:08 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,11 @@ typedef struct s_expand_ctx
 	t_env			*env;
 	int				exit_status;
 }					t_expand_ctx;
+
+typedef struct s_heredoc_ctx
+{
+	t_env			*env;
+	int				exit_code;
+}					t_heredoc_ctx;
 
 #endif

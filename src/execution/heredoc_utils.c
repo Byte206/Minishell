@@ -1,0 +1,111 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/11 20:00:00 by gamorcil          #+#    #+#             */
+/*   Updated: 2025/12/11 20:00:00 by gamorcil         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/minishell.h"
+
+static char	*expand_var(char *result, char **line, int *i,
+				t_heredoc_ctx *ctx)
+{
+	char	*var_name;
+	char	*var_value;
+	int		var_len;
+	int		should_free;
+	int		j;
+
+	(*i)++;
+	var_name = get_var_name(&(*line)[*i], &var_len);
+	if (var_name)
+	{
+		var_value = get_var_value(ctx->env, var_name, &should_free,
+				ctx->exit_code);
+		if (var_value)
+		{
+			j = 0;
+			while (var_value[j])
+				result = append_char_to_result(result, var_value[j++]);
+			if (should_free)
+				free(var_value);
+		}
+		free(var_name);
+		*i += var_len;
+	}
+	else
+		result = append_char_to_result(result, '$');
+	return (result);
+}
+
+char	*expand_heredoc_line(char *line, t_env *env, int exit_code)
+{
+	char			*result;
+	int				i;
+	t_heredoc_ctx	ctx;
+
+	ctx.env = env;
+	ctx.exit_code = exit_code;
+	result = ft_strdup("");
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '$' && line[i + 1])
+			result = expand_var(result, &line, &i, &ctx);
+		else
+		{
+			result = append_char_to_result(result, line[i]);
+			i++;
+		}
+	}
+	return (result);
+}
+
+static int	process_heredoc_loop(t_redir *r, int pipefd,
+				t_heredoc_ctx *ctx)
+{
+	char	*line;
+	char	*expanded;
+	int		len;
+
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+			break ;
+		len = ft_strlen(r->target);
+		if (ft_strncmp(line, r->target, len) == 0 && line[len] == '\0')
+		{
+			free(line);
+			break ;
+		}
+		expanded = expand_heredoc_line(line, ctx->env, ctx->exit_code);
+		ft_putendl_fd(expanded, pipefd);
+		free(expanded);
+		free(line);
+	}
+	return (0);
+}
+
+int	process_heredoc(t_redir *r, t_env *env, int exit_code)
+{
+	int				pipefd[2];
+	t_heredoc_ctx	ctx;
+
+	ctx.env = env;
+	ctx.exit_code = exit_code;
+	if (pipe(pipefd) == -1)
+	{
+		perror("pipe");
+		return (-1);
+	}
+	process_heredoc_loop(r, pipefd[1], &ctx);
+	close(pipefd[1]);
+	r->heredoc_fd = pipefd[0];
+	return (0);
+}

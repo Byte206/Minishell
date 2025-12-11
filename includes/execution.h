@@ -6,7 +6,7 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:38:53 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/12/11 19:22:41 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/11 19:51:15 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,29 @@ int					set_redirections(t_redir *redirections);
 int					process_heredoc(t_redir *r, t_env *env, int exit_code);
 int					process_all_heredocs(t_ast *ast, t_env *env, int exit_code);
 void				close_heredoc_fds(t_ast *ast);
+int					handle_redir_in(t_redir *r);
+int					handle_redir_out(t_redir *r);
+int					handle_redir_append(t_redir *r);
+int					handle_heredoc(t_redir *r);
+char				*expand_heredoc_line(char *line, t_env *env, int exit_code);
 
 // exec_builtin functions
 int					exec_builtin_cmd(t_ast *ast, t_env **env, int exit_code);
 
 // execution_utils functions
 int					is_builtin(char *cmd_name);
+int					father(int pid);
+int					exec_external_cmd(t_ast *ast, t_env **env);
+int					handle_redir_only_cmd(t_ast *ast);
+int					exec_single_cmd(t_ast *ast, t_env **env, int exit_code);
+
+// ft_export_utils2 functions
+void				add_or_update_env(t_env **env, char *name, char *value);
+void				export_not_valid(char *name);
+int					is_valid_identifier(char *name);
+void				free_export_vars(char *name, char *value);
+int					handle_export_without_equal(t_cmd *cmd, t_env **env, int i);
+int					handle_export_with_equal(t_cmd *cmd, t_env **env, int i);
 int					count_cmds(t_cmd *cmd);
 int					wait_children(int *pids, int n);
 void				handle_parent_pipes(int *prev_read, int pipefd[2],
