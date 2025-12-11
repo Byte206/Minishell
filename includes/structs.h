@@ -6,7 +6,7 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/01 14:19:56 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/12/01 13:50:38 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/11 19:10:10 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_redir
 {
 	t_redir_type	type;
 	char			*target;
+	int				heredoc_fd;
 	struct s_redir	*next;
 }					t_redir;
 

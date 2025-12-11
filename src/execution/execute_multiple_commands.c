@@ -6,7 +6,7 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 13:14:08 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/12/09 00:05:13 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/11 19:22:40 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static void	exec_external_child(t_cmd *cmd, t_env **env)
 {
 	char	*path;
 
-	printf("exec_external_child called, cmd_name: '%s'\n", cmd->cmd_name ? cmd->cmd_name : "NULL");
 	if (!cmd->cmd_name || !*cmd->cmd_name)
 		exit(0);
 	path = set_path(cmd->cmd_name, *env);
@@ -73,13 +72,15 @@ void	child_execute(t_cmd *cmd, int prev_read, int pipe_write,
 	exec_external_child(cmd, env);
 }
 
-int	execute_multiple_commands(t_ast *ast, t_env **env)
+int	execute_multiple_commands(t_ast *ast, t_env **env, int exit_code)
 {
 	int	cmds_count;
 	int	*pids;
 	int	status;
 
 	if (!ast || !ast->commands)
+		return (1);
+	if (process_all_heredocs(ast, *env, exit_code) < 0)
 		return (1);
 	cmds_count = count_cmds(ast->commands);
 	pids = malloc(sizeof(int) * cmds_count);

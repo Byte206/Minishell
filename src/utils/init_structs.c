@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_structs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmonterd <bmonterd@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 16:09:19 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/11/15 15:14:05 by bmonterd         ###   ########.fr       */
+/*   Updated: 2025/12/11 19:11:31 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ t_redir	*new_redir(void)
 		return (NULL);
 	redir->type = REDIR_IN;
 	redir->target = NULL;
+	redir->heredoc_fd = -1;
 	redir->next = NULL;
 	return (redir);
 }

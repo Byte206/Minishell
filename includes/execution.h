@@ -6,7 +6,7 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:38:53 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/12/01 13:53:36 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/11 19:22:41 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char				*get_value(char *var);
 
 // execution
 int					execution(t_ast *ast, t_env **env, int exit_code);
-int					execute_multiple_commands(t_ast *ast, t_env **env);
+int					execute_multiple_commands(t_ast *ast, t_env **env, int exit_code);
 int					exec_builtin(t_ast *ast, t_env **env, int exit_code);
 void				child_execute(t_cmd *cmd, int prev_read, int pipe_write,
 						t_env **env);
@@ -39,6 +39,9 @@ char				**env_to_char_array(t_env *env);
 
 // Redir functions
 int					set_redirections(t_redir *redirections);
+int					process_heredoc(t_redir *r, t_env *env, int exit_code);
+int					process_all_heredocs(t_ast *ast, t_env *env, int exit_code);
+void				close_heredoc_fds(t_ast *ast);
 
 // exec_builtin functions
 int					exec_builtin_cmd(t_ast *ast, t_env **env, int exit_code);

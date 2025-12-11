@@ -6,7 +6,7 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 13:29:05 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/12/01 13:46:25 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/11 19:01:17 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	is_builtin(char *cmd_name)
 {
 	size_t	len;
 
+	if (!cmd_name)
+		return (0);
 	len = ft_strlen(cmd_name);
 	if ((ft_strncmp(cmd_name, "cd", len) == 0 && len == 2)
 		|| (ft_strncmp(cmd_name, "echo", len) == 0 && len == 4)

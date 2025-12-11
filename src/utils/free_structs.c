@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_structs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bmonterd <bmonterd@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 15:14:25 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/11/15 18:55:40 by bmonterd         ###   ########.fr       */
+/*   Updated: 2025/12/11 19:17:20 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	free_redir(t_redir *redir)
 		redir = redir->next;
 		if (tmp->target)
 			free(tmp->target);
+		if (tmp->heredoc_fd != -1)
+			close(tmp->heredoc_fd);
 		free(tmp);
 	}
 }

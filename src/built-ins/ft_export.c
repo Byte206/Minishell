@@ -6,7 +6,7 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 11:46:19 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/12/08 23:54:02 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/11 19:03:46 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,49 @@ static void	free_export_vars(char *name, char *value)
 		free(value);
 }
 
+static int	handle_export_without_equal(t_cmd *cmd, t_env **env, int i)
+{
+	char	*name;
+	char	*value;
+
+	name = ft_strdup(cmd->argv[i]);
+	if (!is_valid_identifier(name))
+	{
+		export_not_valid(cmd->argv[i]);
+		free(name);
+		return (1);
+	}
+	value = ft_strdup("");
+	add_or_update_env(env, name, value);
+	free_export_vars(name, value);
+	return (0);
+}
+
+static int	handle_export_with_equal(t_cmd *cmd, t_env **env, int i)
+{
+	char	*name;
+	char	*value;
+
+	name = get_name(cmd->argv[i]);
+	value = get_value(cmd->argv[i]);
+	if (!is_valid_identifier(name))
+	{
+		export_not_valid(cmd->argv[i]);
+		free_export_vars(name, value);
+		return (1);
+	}
+	if (!value && ft_strchr(cmd->argv[i], '='))
+		value = ft_strdup("");
+	if (value)
+		add_or_update_env(env, name, value);
+	free_export_vars(name, value);
+	return (0);
+}
+
 int	ft_export(t_cmd *cmd, t_env **env)
 {
 	int		i;
 	char	*name;
-	char	*value;
 
 	if (!cmd->argv[1])
 		return (print_env_sorted(env));
@@ -85,33 +123,17 @@ int	ft_export(t_cmd *cmd, t_env **env)
 	while (cmd->argv[i])
 	{
 		name = get_name(cmd->argv[i]);
-		value = get_value(cmd->argv[i]);
 		if (!name)
 		{
-			name = ft_strdup(cmd->argv[i]);
-			if (!is_valid_identifier(name))
-			{
-				export_not_valid(cmd->argv[i]);
-				free(name);
+			if (handle_export_without_equal(cmd, env, i) != 0)
 				return (1);
-			}
-			value = ft_strdup("");
-			add_or_update_env(env, name, value);
-			free_export_vars(name, value);
-			i++;
-			continue ;
 		}
-		if (!is_valid_identifier(name))
+		else
 		{
-			export_not_valid(cmd->argv[i]);
-			free_export_vars(name, value);
-			return (1);
+			free(name);
+			if (handle_export_with_equal(cmd, env, i) != 0)
+				return (1);
 		}
-		if (!value && ft_strchr(cmd->argv[i], '='))
-			value = ft_strdup("");
-		if (value)
-			add_or_update_env(env, name, value);
-		free_export_vars(name, value);
 		i++;
 	}
 	return (0);

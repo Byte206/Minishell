@@ -6,7 +6,7 @@
 /*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 14:34:58 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/12/09 00:13:47 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/11 19:22:40 by gamorcil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	exec_builtin(t_ast *ast, t_env **env, int exit_code)
 {
+	if (!ast->commands->cmd_name)
+		return (0);
 	if (ft_strncmp(ast->commands->cmd_name, "cd", 3) == 0)
 		return (ft_cd(ast->commands, env));
 	else if (ft_strncmp(ast->commands->cmd_name, "echo", 5) == 0)
@@ -72,12 +74,41 @@ static int	exec_external_cmd(t_ast *ast, t_env **env)
 	return (father(pid));
 }
 
+static int	handle_redir_only_cmd(t_ast *ast)
+{
+	int	pid;
+	int	status;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		if (set_redirections(ast->commands->redirections) < 0)
+			exit(1);
+		exit(0);
+	}
+	if (pid < 0)
+	{
+		perror("fork");
+		return (1);
+	}
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	return (1);
+}
+
 static int	exec_single_cmd(t_ast *ast, t_env **env, int exit_code)
 {
+	if (process_all_heredocs(ast, *env, exit_code) < 0)
+		return (1);
+	if (!ast->commands->cmd_name || !*ast->commands->cmd_name)
+	{
+		if (ast->commands->redirections)
+			return (handle_redir_only_cmd(ast));
+		return (0);
+	}
 	if (is_builtin(ast->commands->cmd_name))
 		return (exec_builtin_cmd(ast, env, exit_code));
-	if (!ast->commands->cmd_name || !*ast->commands->cmd_name)
-		return (0);
 	return (exec_external_cmd(ast, env));
 }
 
@@ -87,10 +118,8 @@ int	execution(t_ast *ast, t_env **env, int exit_code)
 		return (1);
 	set_signals();
 	if (!ast->commands->next)
-	{
 		exit_code = (exec_single_cmd(ast, env, exit_code));
-	}
 	else
-		exit_code = execute_multiple_commands(ast, env);
+		exit_code = execute_multiple_commands(ast, env, exit_code);
 	return (exit_code);
 }
