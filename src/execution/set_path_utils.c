@@ -15,14 +15,20 @@
 char	*look_for_exec_in_cwd(char *cmd_name)
 {
 	char	*cwd;
+	char	*temp;
 	char	*full_path;
 
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
 		return (NULL);
-	full_path = ft_strjoin(cwd, "/");
-	full_path = ft_strjoin(full_path, cmd_name);
-	free(cwd);
+	temp = ft_strjoin(cwd, "/"); // Guarda en temp
+	free(cwd);                   // Libera cwd
+	if (!temp)
+		return (NULL);
+	full_path = ft_strjoin(temp, cmd_name);
+	free(temp); // ← LIBERA temp aquí
+	if (!full_path)
+		return (NULL);
 	if (access(full_path, X_OK) == 0)
 		return (full_path);
 	free(full_path);
