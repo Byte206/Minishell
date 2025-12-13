@@ -76,6 +76,7 @@ int	ft_exit(t_ast *ast, int exit_code)
 	int		error;
 
 	ft_putstr_fd("exit\n", 2);
+	new_exit_code = 0;
 	if (ast->commands->argv[1] && ast->commands->argv[2])
 		return (ft_putstr_fd("exit: too many arguments\n", 2), 1);
 	if (!ast->commands->argv[1])

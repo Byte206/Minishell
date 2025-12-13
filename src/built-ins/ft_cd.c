@@ -99,11 +99,12 @@ int	ft_cd(t_cmd *cmd, t_env **env)
 	char	*new_path;
 	char	*old_path;
 
-	if (cmd->argv[2])
+	if (cmd->argv[1] && cmd->argv[2])
 	{
-		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		ft_putstr_fd("minishell: cd: too many arguments:\n", 2);
 		return (1);
 	}
+	new_path = NULL;
 	old_path = get_old_path(env);
 	new_path = get_target_path(cmd->argv[1], env);
 	if (!new_path)
