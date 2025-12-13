@@ -1,6 +1,6 @@
 NAME		= minishell
 CC			= cc
-CFLAGS		= -Wall -Wextra -Werror -g3
+CFLAGS		= -Wall -Wextra -Werror -g3 -fsanitize=address
 INC			= -I includes -I libft
 LIBS		= -lreadline
 LIBFT_DIR	= libft

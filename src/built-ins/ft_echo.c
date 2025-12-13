@@ -17,6 +17,8 @@ static int	check_newline(char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (1);
 	if (str[i] == '-' && str[i + 1] == 'n')
 	{
 		i += 2;
