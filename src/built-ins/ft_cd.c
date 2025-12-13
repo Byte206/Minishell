@@ -12,20 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-static char	*get_value_from_env(const char *name, t_env **env)
-{
-	t_env	*current;
-
-	current = *env;
-	while (current)
-	{
-		if (ft_strcmp(current->name, name) == 0)
-			return (current->value);
-		current = current->next;
-	}
-	return (NULL);
-}
-
 static char	*get_old_path(t_env **env)
 {
 	char	*cwd;
@@ -94,6 +80,21 @@ void	update_env_path(t_env **env, char *old_path)
 	free(new_cwd);
 }
 
+static int	do_chdir(char *new_path, char *old_path, t_env **env)
+{
+	if (chdir(new_path) == -1)
+	{
+		perror("minishell: cd");
+		free(new_path);
+		free(old_path);
+		return (1);
+	}
+	update_env_path(env, old_path);
+	free(old_path);
+	free(new_path);
+	return (0);
+}
+
 int	ft_cd(t_cmd *cmd, t_env **env)
 {
 	char	*new_path;
@@ -112,13 +113,5 @@ int	ft_cd(t_cmd *cmd, t_env **env)
 		free(old_path);
 		return (1);
 	}
-	if (chdir(new_path) == -1)
-	{
-		perror("minishell: cd");
-		free(new_path);
-		free(old_path);
-		return (1);
-	}
-	update_env_path(env, old_path);
-	return (free(old_path), free(new_path), 0);
+	return (do_chdir(new_path, old_path, env));
 }

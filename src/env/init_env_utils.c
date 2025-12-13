@@ -35,3 +35,21 @@ char	*get_value(char *var)
 		return (NULL);
 	return (ft_strdup(sign + 1));
 }
+
+t_env	*build_node(char *name, char *value)
+{
+	t_env	*node;
+
+	node = malloc(sizeof(t_env));
+	if (!node)
+	{
+		free(value);
+		free(name);
+		return (NULL);
+	}
+	node->name = name;
+	node->value = value;
+	node->prev = NULL;
+	node->next = NULL;
+	return (node);
+}

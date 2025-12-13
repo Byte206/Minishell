@@ -12,6 +12,13 @@
 
 #include "../../includes/minishell.h"
 
+void	free_export_vars(char *name, char *value)
+{
+	free(name);
+	if (value)
+		free(value);
+}
+
 int	handle_export_with_equal(t_cmd *cmd, t_env **env, int i)
 {
 	char	*name;

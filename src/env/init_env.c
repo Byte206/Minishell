@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: bmonterd <bmonterd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 13:27:38 by gamorcil          #+#    #+#             */
-/*   Updated: 2025/12/01 13:26:46 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/12/13 15:45:58 by bmonterd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static t_env	*create_env_node(char *env_str)
 {
 	char	*name;
 	char	*value;
-	t_env	*node;
 
 	if (!env_str)
 		return (NULL);
@@ -56,16 +55,7 @@ static t_env	*create_env_node(char *env_str)
 		free(value);
 		return (NULL);
 	}
-	node = malloc(sizeof(t_env));
-	if (!node)
-	{
-		return (free(value), free(name), NULL);
-	}
-	node->name = name;
-	node->value = value;
-	node->prev = NULL;
-	node->next = NULL;
-	return (node);
+	return (build_node(name, value));
 }
 
 static void	add_env_node(t_env **head, t_env *node)

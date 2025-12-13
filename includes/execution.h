@@ -14,6 +14,7 @@
 t_env	*init_env(char **envp);
 char	*get_name(char *var);
 char	*get_value(char *var);
+t_env	*build_node(char *name, char *value);
 
 // execution
 int		execution(t_ast *ast, t_env **env, int exit_code);
@@ -31,10 +32,20 @@ int		ft_export(t_cmd *cmd, t_env **env);
 int		print_env_sorted(t_env **env);
 int		ft_unset(t_cmd *cmd, t_env **env);
 
+// ft_cd_utils functions
+char	*get_value_from_env(const char *name, t_env **env);
+
+// ft_exit_utils functions
+int		check_overflow(long long res, int sign, char digit, int *error);
+int		skip_whitespace_and_sign(char *str, int *sign);
+
 // set_path functions
 char	*look_for_exec_in_cwd(char *cmd_name);
 char	*set_path(char *cmd_name, t_env *env);
 char	**env_to_char_array(t_env *env);
+void	free_array(char **array);
+char	*build_full_path(char *dir, char *cmd_name);
+char	*get_cmd_path(char *cmd_name, char *path_value);
 
 // Redir functions
 int		set_redirections(t_redir *redirections);

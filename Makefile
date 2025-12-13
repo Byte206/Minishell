@@ -8,9 +8,11 @@ LIBFT		= $(LIBFT_DIR)/libft.a
 
 SRCS		= src/main.c \
 			  src/built-ins/ft_cd.c \
+			  src/built-ins/ft_cd_utils.c \
 			  src/built-ins/ft_echo.c \
 			  src/built-ins/ft_env.c \
 			  src/built-ins/ft_exit.c \
+			  src/built-ins/ft_exit_utils.c \
 			  src/built-ins/ft_export.c \
 			  src/built-ins/ft_export_utils.c \
 			  src/built-ins/ft_export_utils2.c \

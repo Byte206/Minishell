@@ -12,6 +12,23 @@
 
 #include "../../includes/minishell.h"
 
+static t_env	*create_env_node(char *name, char *value)
+{
+	t_env	*new_node;
+
+	new_node = malloc(sizeof(t_env));
+	if (!new_node)
+		return (NULL);
+	new_node->name = ft_strdup(name);
+	if (value)
+		new_node->value = ft_strdup(value);
+	else
+		new_node->value = NULL;
+	new_node->next = NULL;
+	new_node->prev = NULL;
+	return (new_node);
+}
+
 void	add_or_update_env(t_env **env, char *name, char *value)
 {
 	t_env	*current;
@@ -23,16 +40,16 @@ void	add_or_update_env(t_env **env, char *name, char *value)
 		if (ft_strncmp(current->name, name, ft_strlen(name) + 1) == 0)
 		{
 			free(current->value);
-			current->value = ft_strdup(value);
+			if (value)
+				current->value = ft_strdup(value);
+			else
+				current->value = NULL;
 			return ;
 		}
 		current = current->next;
 	}
-	new_node = malloc(sizeof(t_env));
-	new_node->name = ft_strdup(name);
-	new_node->value = ft_strdup(value);
+	new_node = create_env_node(name, value);
 	new_node->next = *env;
-	new_node->prev = NULL;
 	if (*env)
 		(*env)->prev = new_node;
 	*env = new_node;
@@ -66,17 +83,9 @@ int	is_valid_identifier(char *name)
 	return (1);
 }
 
-void	free_export_vars(char *name, char *value)
-{
-	free(name);
-	if (value)
-		free(value);
-}
-
 int	handle_export_without_equal(t_cmd *cmd, t_env **env, int i)
 {
 	char	*name;
-	char	*value;
 
 	name = ft_strdup(cmd->argv[i]);
 	if (!is_valid_identifier(name))
@@ -85,8 +94,7 @@ int	handle_export_without_equal(t_cmd *cmd, t_env **env, int i)
 		free(name);
 		return (1);
 	}
-	value = ft_strdup("");
-	add_or_update_env(env, name, value);
-	free_export_vars(name, value);
+	add_or_update_env(env, name, NULL);
+	free(name);
 	return (0);
 }

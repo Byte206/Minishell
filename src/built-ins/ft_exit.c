@@ -20,22 +20,12 @@ static long long	atoll_exit(char *str, int *error)
 
 	res = 0;
 	sign = 1;
-	i = 0;
 	*error = 0;
-	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			sign = -1;
-		i++;
-	}
+	i = skip_whitespace_and_sign(str, &sign);
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		if (sign == 1 && res > (LLONG_MAX - (str[i] - '0')) / 10)
-			return (*error = 1, 0);
-		if (sign == -1 && - res < (LLONG_MIN + (str[i] - '0')) / 10)
-			return (*error = 1, 0);
+		if (check_overflow(res, sign, str[i], error))
+			return (0);
 		res = res * 10 + (str[i++] - '0');
 	}
 	return (res * sign);
@@ -78,7 +68,10 @@ int	ft_exit(t_ast *ast, int exit_code)
 	ft_putstr_fd("exit\n", 2);
 	new_exit_code = 0;
 	if (ast->commands->argv[1] && ast->commands->argv[2])
-		return (ft_putstr_fd("exit: too many arguments\n", 2), 1);
+	{
+		ft_putstr_fd("exit: too many arguments\n", 2);
+		return (1);
+	}
 	if (!ast->commands->argv[1])
 		new_exit_code = (uint8_t)exit_code;
 	else if (!is_numeric(ast->commands->argv[1]))
