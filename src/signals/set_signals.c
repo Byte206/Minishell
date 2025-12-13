@@ -15,8 +15,10 @@
 void	handle_sigint(int signum)
 {
 	(void)signum;
-	printf("\nminishell> ");
-	return ;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
 void	handle_sigquit(int signum)

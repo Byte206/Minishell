@@ -90,24 +90,3 @@ int	handle_export_without_equal(t_cmd *cmd, t_env **env, int i)
 	free_export_vars(name, value);
 	return (0);
 }
-
-int	handle_export_with_equal(t_cmd *cmd, t_env **env, int i)
-{
-	char	*name;
-	char	*value;
-
-	name = get_name(cmd->argv[i]);
-	value = get_value(cmd->argv[i]);
-	if (!is_valid_identifier(name))
-	{
-		export_not_valid(cmd->argv[i]);
-		free_export_vars(name, value);
-		return (1);
-	}
-	if (!value && ft_strchr(cmd->argv[i], '='))
-		value = ft_strdup("");
-	if (value)
-		add_or_update_env(env, name, value);
-	free_export_vars(name, value);
-	return (0);
-}

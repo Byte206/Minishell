@@ -14,6 +14,7 @@ SRCS		= src/main.c \
 			  src/built-ins/ft_export.c \
 			  src/built-ins/ft_export_utils.c \
 			  src/built-ins/ft_export_utils2.c \
+			  src/built-ins/ft_export_utils3.c \
 			  src/built-ins/ft_pwd.c \
 			  src/built-ins/ft_unset.c \
 			  src/env/init_env.c \
@@ -24,6 +25,7 @@ SRCS		= src/main.c \
 			  src/execution/execution_utils.c \
 			  src/execution/execution_utils2.c \
 			  src/execution/heredoc_utils.c \
+			  src/execution/heredoc_utils2.c \
 			  src/execution/pipes.c \
 			  src/execution/set_path.c \
 			  src/execution/set_path_utils.c \

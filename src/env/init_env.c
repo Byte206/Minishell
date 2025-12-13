@@ -86,23 +86,52 @@ static void	add_env_node(t_env **head, t_env *node)
 	node->prev = tail;
 }
 
-static void	create_default_env(t_env **head)
+static t_env	*create_simple_node(char *name, char *value)
 {
 	t_env	*node;
+
+	node = malloc(sizeof(t_env));
+	if (!node)
+		return (NULL);
+	node->name = ft_strdup(name);
+	node->value = ft_strdup(value);
+	if (!node->name || !node->value)
+	{
+		free(node->name);
+		free(node->value);
+		free(node);
+		return (NULL);
+	}
+	node->prev = NULL;
+	node->next = NULL;
+	return (node);
+}
+
+static void	create_default_env(t_env **head)
+{
+	t_env	*pwd_node;
+	t_env	*shlvl_node;
+	t_env	*underscore_node;
 	char	*cwd;
 
 	if (!head)
 		return ;
-	node = malloc(sizeof(t_env));
-	if (!node)
+	pwd_node = malloc(sizeof(t_env));
+	if (!pwd_node)
 		return ;
-	node->name = ft_strdup("PWD");
+	pwd_node->name = ft_strdup("PWD");
 	cwd = getcwd(NULL, 0);
 	if (cwd)
-		node->value = cwd;
+		pwd_node->value = cwd;
 	else
-		node->value = ft_strdup(".");
-	node->prev = NULL;
-	node->next = NULL;
-	*head = node;
+		pwd_node->value = ft_strdup(".");
+	pwd_node->prev = NULL;
+	pwd_node->next = NULL;
+	*head = pwd_node;
+	shlvl_node = create_simple_node("SHLVL", "1");
+	if (shlvl_node)
+		add_env_node(head, shlvl_node);
+	underscore_node = create_simple_node("_", "/usr/bin/env");
+	if (underscore_node)
+		add_env_node(head, underscore_node);
 }

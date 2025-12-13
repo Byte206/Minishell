@@ -75,6 +75,7 @@ int	main(int argc, char **argv, char **envp)
 	exit_code = 0;
 	if (argc != 1 || argv[1])
 		return (1);
+	rl_catch_signals = 0;
 	env = init_env(envp);
 	printf("Welcome to minishell\n");
 	shell_loop(&env, &exit_code);
