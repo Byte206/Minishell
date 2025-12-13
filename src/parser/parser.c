@@ -54,6 +54,8 @@ static void	process_redirections(t_cmd *cmd, t_token **tokens)
 		if (is_redir_token((*tokens)->type))
 		{
 			redir = new_redir();
+			if (!redir)
+				return ;
 			redir->type = get_redir_type((*tokens)->type);
 			if ((*tokens)->next && (*tokens)->next->type == TOKEN_WORD)
 			{
@@ -62,7 +64,7 @@ static void	process_redirections(t_cmd *cmd, t_token **tokens)
 				add_redir_to_cmd(cmd, redir);
 				continue ;
 			}
-			add_redir_to_cmd(cmd, redir);
+			free(redir);
 		}
 		if (*tokens)
 			*tokens = (*tokens)->next;
@@ -81,7 +83,12 @@ static t_cmd	*parse_command(t_token **tokens)
 	start = *tokens;
 	arg_count = count_args(start);
 	cmd->argv = build_argv(tokens, arg_count);
-	if (cmd->argv && cmd->argv[0])
+	if (!cmd->argv)
+	{
+		free(cmd);
+		return (NULL);
+	}
+	if (cmd->argv[0])
 		cmd->cmd_name = ft_strdup(cmd->argv[0]);
 	*tokens = start;
 	process_redirections(cmd, tokens);
@@ -102,6 +109,11 @@ t_ast	*parser(t_token *tokens)
 	current = tokens;
 	while (current)
 	{
+		if (current->type == TOKEN_PIPE)
+		{
+			current = current->next;
+			continue ;
+		}
 		cmd = parse_command(&current);
 		if (cmd)
 			add_cmd_to_ast(ast, cmd);

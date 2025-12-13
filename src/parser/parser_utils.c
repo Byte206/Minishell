@@ -6,28 +6,44 @@
 /*   By: bmonterd <bmonterd@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 15:47:53 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/11/15 18:54:39 by bmonterd         ###   ########.fr       */
+/*   Updated: 2025/12/13 14:05:35 by bmonterd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+static void	process_token(t_token **current, int *count, int *word_started)
+{
+	if ((*current)->type == TOKEN_WORD)
+	{
+		if (!(*current)->joined || !(*word_started))
+		{
+			(*count)++;
+			*word_started = 1;
+		}
+	}
+	else if (is_redir_token((*current)->type))
+	{
+		if ((*current)->next)
+			*current = (*current)->next;
+		*word_started = 0;
+	}
+	else
+		*word_started = 0;
+}
+
 int	count_args(t_token *tokens)
 {
 	int		count;
 	t_token	*current;
+	int		word_started;
 
 	count = 0;
+	word_started = 0;
 	current = tokens;
 	while (current && current->type != TOKEN_PIPE)
 	{
-		if (current->type == TOKEN_WORD && !current->joined)
-			count++;
-		else if (is_redir_token(current->type))
-		{
-			if (current->next)
-				current = current->next;
-		}
+		process_token(&current, &count, &word_started);
 		current = current->next;
 	}
 	return (count);

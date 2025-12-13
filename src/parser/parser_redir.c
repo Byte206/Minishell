@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gamorcil <gamorcil@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: bmonterd <bmonterd@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/15 22:30:00 by bmonterd          #+#    #+#             */
-/*   Updated: 2025/12/11 19:29:32 by gamorcil         ###   ########.fr       */
+/*   Updated: 2025/11/30 17:26:20 by bmonterd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ char	*build_redir_target(t_token **tokens)
 	char	*target;
 	char	*tmp;
 
-	if (!(*tokens) || !(*tokens)->value)
-		return (NULL);
 	target = ft_strdup((*tokens)->value);
 	*tokens = (*tokens)->next;
 	while (*tokens && (*tokens)->type == TOKEN_WORD && (*tokens)->joined)
